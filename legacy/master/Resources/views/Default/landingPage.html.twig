@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TargetCall: заказы без посредников</title>
+	
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ static_host }}legacy/css/target-call.css">
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>    
+    <script>
+	
+    $(document).ready(function(){ 
+      $("[data-toggle='tooltip']").tooltip(); 
+    });
+    
+    </script>
+  </head>
+  <body>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+    ga('create', 'UA-56734502-1', 'auto');
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+</script>	
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter30613882 = new Ya.Metrika({id:30613882,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/30613882" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+	<div class="headerwrapper">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-4 col-sm-3 col-md-2">
+					<a href=""><img src="{{ static_host }}legacy/img/logo.png" class="img-responsive"></a>
+				</div>
+				<div class="col-sm-4 col-md-5 hidden-xs text-right">
+					<a class="btn btn-danger btn-lg" href="{{ path('master/dashboard') }}">Вход в личный кабинет</a>
+				</div>
+				<div class="col-xs-8 visible-xs text-right">
+					<a class="btn btn-danger" href="{{ path('master/dashboard') }}">Вход в личный кабинет</a>
+				</div>
+				<div class="col-sm-5 col-md-5 text-right hidden-xs">
+					<div class="phone-target">8 (800) 700 51 07</div>
+					<div class="phone-asterisk">*звонок бесплатный для всех телефонов РФ</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="jumbotron offer">
+		<div class="container">
+			<h1>Заказы без посредников</h1>
+			<h2>Рекламный сервис для электриков, сантехников, каменщиков и других мастеров своего дела</h2>		
+		</div>
+		<div class="container text-center">
+			<div class="row">
+				<div class="capture col-md-6 col-md-offset-3">
+					<p class="h3"><strong>Попробуйте бесплатно!</strong></p>
+					<p>Зарегистрируйтесь сегодня и получите возможность попробовать сервис бесплатно.</p>
+					<p class="small">Введите номер вашего мобильного телефона и нажмите кнопку «Попробовать бесплатно».</p>
+					<form class="form" role="form" action="/pa/register" method="post">
+					  <div class="form-group">
+						<label class="sr-only" for="InputPhone1">Ваш номер телефона</label>
+						<input type="tel" class="form-control" id="InputPhone1" placeholder="Ваш номер телефона" name="phone">
+					  </div>
+					  <button type="submit" class="btn btn-danger btn-lg">Попробовать бесплатно</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container block2">
+		<h2 class="text-center">Наши преимущества</h2>
+		<ul>
+		  <li>Вам не придется самостоятельно заниматься рекламой. Расклейку, газеты, интернет мы возьмем на себя.</li>
+		  <li>Вы оплачиваете только звонки от потенциальных заказчиков. Если звонок окажется ошибочным, мы вернем деньги.</li>
+		  <li>Вы самостоятельно общаетесь с заказчиком, самостоятельно назначаете цену, самостоятельно получаете оплату и ни с кем не делитесь.</li>
+		  <li>Вы получаете звонки только тогда, когда Вам они необходимы.</li>
+		  <li>Вы получаете звонки только из тех мест, где Вам удобнее работать, с точностью до микрорайона.</li>
+		  <li>Ваш номер телефона не будет «засвечен» для спама и назойливой рекламы.</li>
+		</ul>
+	</div>
+	<div class="container block2">
+		<h2 class="text-center" id="categories">Вам с нами по пути, если Вы занимаетесь:</h2>
+		<ul class="col-md-4">
+		  <li>установкой и ремонтом электроустановочных изделий;</li>
+		  <li>установкой и ремонтом сантехники;</li>
+		  <li>укладкой плитки во внутренних помещениях;</li>
+		</ul>
+		<ul class="col-md-4">
+		  <li>строительством фундаментов;</li>
+		  <li>вывозом строительного мусора;</li>
+		  <li>уборкой и вывозом снега;</li>
+		</ul>
+		<ul class="col-md-4">
+		  <li>бурением скважин на воду;</li>
+		  <li>кровельными работами;</li>
+		  <li>строительством каркасных домов.</li>
+		</ul>
+	</div>
+	<div class="container block2">
+		<h2 class="text-center">Почему выбирают нас</h2>
+		<div class="panel panel-default">
+			<!-- Default panel contents -->
+			<div class="panel-heading">Сравнение Target-Call с другими способами получения заказов</div>
+				<!-- Table -->
+				<div class="table-responsive">
+					<table class="table table-responsive table-bordered">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Target&#8209;Call</th>
+								<th>Бригадир/ посредник/ диспетчер</th>
+								<th>Электронные доски объявлений</th>
+								<th>Расклейка объявлений</th>
+								<th>Газета частных объявлений</th>
+								<th>Поисковая/контекстная реклама в Интернете</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Гарантия звонка</td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+							</tr>
+							<tr>
+								<td>Временные затраты при самостоятельной работе</td>
+								<td class="success">1 минута</td>
+								<td class="success">1 минута</td>
+								<td class="danger">5-10 минут несколько раз в день</td>
+								<td class="danger">1-3 часа в неделю</td>
+								<td class="danger">1 час в неделю</td>
+								<td class="danger">1-3 часа в неделю</td>
+							</tr>
+							<tr>
+								<td>Возможность контролировать количество звонков</td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+							</tr>
+							<tr>
+								<td>Возможность контролировать время звонка</td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="warning"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+							</tr>
+							<tr>
+								<td>Прямой контакт с клиентом</td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="danger"><span class="glyphicon glyphicon-remove"></span></td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+								<td class="success"><span class="glyphicon glyphicon-ok"></span></td>
+							</tr>
+							<tr>
+								<td>Стоимость рекламы относительно суммы заказа</td>
+								<td class="success">1%-10%</span></td>
+								<td class="danger">до 40%</span></td>
+								<td class="danger">15%</span></td>
+								<td class="danger">15%</span></td>
+								<td class="danger">30%</span></td>
+								<td class="danger">1%-90%</span></td>
+							</tr>
+							<tr>
+								<td>Наличие специальных навыков для размещения рекламы</td>
+								<td class="success">базовые</span></td>
+								<td class="success">базовые</span></td>
+								<td class="danger">наличие небольшого опыта</span></td>
+								<td class="danger">наличие небольшого опыта</span></td>
+								<td class="danger">наличие небольшого опыта</span></td>
+								<td class="danger">требуется серьезное обучение</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="capturewrapper text-center">
+		<div class="container">
+			<h3>Зарегистрируйтесь сейчас и оцените все преимущества бесплатно</h3>
+			<form role="form" class="form-inline" action="/pa/register" method="post">
+				<div class="form-group">
+					<input type="tel" class="form-control" id="inputPhone2" placeholder="Ваш номер телефона" name="phone">
+					<button type="submit" class="btn btn-danger">Попробовать бесплатно</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="container block2">
+		<h2 class="text-center">Часто задаваемые вопросы</h2>
+      	
+
+      <h3>Что такое Target-Call?</h3>
+
+      <p>Target-Call - это сервис, при помощи которого пользователи получают телефонные вызовы от людей потенциально заинтересованных в их услугах.</p>
+
+<p>Если вы человек «свободной» профессии, «калымите» или «шабашите» и ранее находили клиентов, размещая объявления в интернете или в газетах, то этот сервис для вас - регистрируйтесь, размещайте свое предложение и ваши клиенты найдут вас тогда, когда Вы того пожелаете.</p>
+
+<h3>Target-Call работает через операторов?</h3>
+
+<p>Сервис Target-Call работает БЕЗ операторов, только прямое общение с клиентом, абсолютно прозрачное и понятное для обеих сторон.</p>
+
+<p>Вы самостоятельно общаетесь с клиентом, самостоятельно назначаете цену на свои услуги и условия работы, самостоятельно получаете оплату, Target-Call просто помогает вашему клиенту найти Вас тогда, когда Вам надо без лишних усилий с вашей стороны.</p>
+
+<h3>Как зарегистрироваться в Target-Call?</h3>
+
+<p>Для регистрации на сервисе Target-Call необходимо нажать на ссылку «Зарегистрироваться», расположенную на главной странице сервиса, ввести в предложенном поле свой номер телефона и нажать кнопку «Зарегистрироваться».</p>
+
+<p>Вам придёт SMS-сообщение с паролем для входа в личный кабинет. Для входа в личный кабинет и управления услугами Target-Call используйте Ваш номер телефона и пароль, полученный при помощи SMS.</p>
+
+<h3>Я в первый раз зашел в личный кабинет, что мне делать дальше?</h3>
+
+<p>Если вы в первый раз зашли в личный кабинет, перейдите в раздел «Настройки». Укажите в специальной форме вашу фамилию, имя, отчество, адрес электронной почты.</p>
+
+<p>Настройте удобное для вас время приёма входящих звонков от потенциальных заказчиков в подразделе «Настройки приема звонков».</p>
+
+<p>Добавьте свое предложение услуги, нажмите на ссылку «Добавить новое предложение» выберите сферу услуг и свой регион из предложенных в списках.</p>
+
+  <p>Нажмите кнопку «Сохранить». Теперь вы полноценно можете пользоваться всеми услугами сервиса Target-Call.</p>
+
+<h3>Как получить заказ?</h3>
+
+<p>Чтобы получить заказ, перейдите на главную страницу, здесь отображается Ваш текущий статус, если Ваш статус «не активен», то Вы не получите звонок, нажмите на ссылку «Изменить статус», чтобы сменить статус на «активен».</p>
+
+<p>Пока ваш статус «активен» - вы можете получить звонок от потенциального клиента</p>
+
+<h3>Я могу отменить прием звонков если у меня изменились планы?</h3>
+
+<p>Если вы хотите отменить приём входящих звонков от потенциальных заказчиков, перейдите на главную страницу и нажмите на ссылку «Изменить статус», так чтобы Ваш статус стал «не активен».</p>
+
+<p>Помните, что изменение статуса происходит не мгновенно и после смены статуса на «не активен» Вы еще в течение примерно 10 минут можете получить звонок.</p>
+
+<h3>Мой статус «активен», а звонки не поступают, в чем причина?</h3>
+
+<p>На главной странице вместе со статусом показывается уточнение, обратите на него внимание.</p>
+
+<p>Если вы только что изменили статус, то в течение ближайших 3 минут уточнение будет говорить о том, что вы не получаете звонки. Это нормально, вам следует подождать.</p>
+
+<p>Если прошло больше трех минут и уточнение не изменилось, проверьте время и день недели приема звонков в ваших настройках. Проверьте, положителен ли баланс. Если вы считаете, что что-то не в порядке - обратитесь в службу поддержки.</p>
+
+<h3>Я могу оказывать два вида услуг?</h3>
+
+<p>Вы можете оказывать любое количество видов услуг.</p>
+
+<p>Добавьте новое предложение в разделе «Настройки» так же как вы делали это после регистрации.</p>
+
+
+	</div>
+
+	<div class="capturewrapper text-center">
+		<div class="container">
+			<h3>Зарегистрируйтесь сейчас и оцените все преимущества бесплатно</h3>
+			<form role="form" class="form-inline" action="/pa/register" method="post">
+				<div class="form-group">
+					<input type="tel" class="form-control" id="inputPhone2" placeholder="Ваш номер телефона" name="phone">
+					<button type="submit" class="btn btn-danger">Попробовать бесплатно</button>
+				</div>
+			</form>
+		</div>
+	</div>
+  
+	<div class="footerwrapper">
+		<div class="container">
+			<div class="row">				
+				<div class="col-xs-4 col-sm-3 col-md-2">
+					<a href=""><img src="{{ static_host }}legacy/img/logo.png" class="img-responsive"></a>
+				</div>
+				<div class="col-xs-8 visible-xs text-right">
+					<a class="btn btn-danger" href="{{ path('master/dashboard') }}">Вход в личный кабинет</a>
+				</div>
+				<div class="col-sm-4 col-md-5 hidden-xs text-right">
+					<a class="btn btn-danger btn-lg" href="{{ path('master/dashboard') }}">Вход в личный кабинет</a>
+				</div>
+				<div class="col-sm-5 col-md-5 text-right hidden-xs">
+					<div class="phone-target">8 (800) 700 51 07</div>
+					<div class="phone-asterisk">*звонок бесплатный для всех телефонов РФ</div>
+				</div>
+				<div class="col-xs-12 legal text-left ">
+					© ООО «Магазин целевых звонков», 2014-2015<br />
+					ИНН/КПП 1840039573/184001001<br />
+					ОГРН 1151840005107<br />
+					<a href="/confidential">Политика конфиденциальности</a><br />
+					<a href="/offer">Публичная оферта</a>
+				</div>
+			</div>
+		</div>
+	</div>
+  </body>
+</html>

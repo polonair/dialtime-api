@@ -1,0 +1,37 @@
+{% extends 'AdminBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Управление донглами
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li class=""><a href="{{ path('admin/dongles') }}"><i class="fa fa-list"></i> Список донглов</a></li>
+			<li class="active"><a href=""><i class="fa fa-plus"></i> Добавить донгл</a></li>
+		</ul>
+		<div class="tab-content">
+			<form method="post" action="{{ path('admin/dongle/add') }}" >
+				<input type="text" name="number" />
+				<input type="text" name="pass_text" />
+				<input type="text" name="pass_voice" />
+    			<select name="gate">
+    				{% for gate in gates %}
+    				<option value="{{gate.id}}">{{gate.id}}</option>
+    				{% endfor %}
+    			</select>
+				<input type="submit" />
+			</form>
+		</div>
+	</div>
+{% endblock %}

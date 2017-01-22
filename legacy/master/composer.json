@@ -1,0 +1,11 @@
+{
+    "name":        "dialtime/master",
+    "homepage":    "http://dialtime.target-call.ru",
+    "description": "Dialtime Master UI",
+    "type":        "symfony-bundle",
+    "version":     "0.1.11",
+    "license":     "SEULA",
+    "authors":     [ { "name": "Alexander Mosyagin", "email": "fixnim@gmail.com", "role": "Developer" } ],
+    "autoload":    { "psr-4": { "Polonairs\\Dialtime\\MasterBundle\\": "" } },
+    "require":     { "dialtime/web": "0.1.11" }
+}

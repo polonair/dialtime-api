@@ -1,0 +1,90 @@
+<aside class="main-sidebar">
+	<section class="sidebar">
+
+		<div class="user-panel">
+			<div class="pull-left image">
+				<img src="{{ static_host }}dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+			</div>
+			<div class="pull-left info">
+				<p>Alexander Pierce</p>
+				<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+			</div>
+		</div>
+
+		<form action="#" method="get" class="sidebar-form">
+			<div class="input-group">
+				<input type="text" name="q" class="form-control" placeholder="Search...">
+				<span class="input-group-btn">
+					<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+				</span>
+			</div>
+		</form>
+
+		<ul class="sidebar-menu">
+			<li class="header">MAIN NAVIGATION</li>
+			<li><a href="{{ path('admin/dashboard') }}"><i class="fa fa-dashboard"></i> <span>Главная страница</span></a></li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dashboard"></i> <span>Рубрикация</span> <i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="{{ path('admin/categories') }}"><i class="fa fa-circle-o"></i> Категории</a></li>
+					<li><a href="{{ path('admin/locations') }}"><i class="fa fa-circle-o"></i> Локации</a></li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dashboard"></i> <span>Оборудование</span> <i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="{{ path('admin/gates') }}"><i class="fa fa-circle-o"></i> Шлюзы</a></li>
+					<li><a href="{{ path('admin/dongles') }}"><i class="fa fa-circle-o"></i> Донглы</a></li>
+					<li><a href="{{ path('admin/servers') }}"><i class="fa fa-circle-o"></i> Сервера</a></li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dashboard"></i> <span>Финансы</span> <i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="{{ path('admin/finance') }}"><i class="fa fa-circle-o"></i> Сводка</a></li>
+					<li><a href="{{ path('admin/finance/accounts') }}"><i class="fa fa-circle-o"></i> Счета</a></li>
+					<li><a href="{{ path('admin/finance/transactions') }}"><i class="fa fa-circle-o"></i> Транзакции</a></li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dashboard"></i> <span>Служба поддержки</span> <i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="{{ path('admin/support') }}"><i class="fa fa-circle-o"></i> Тикеты</a></li>
+					<li><a href="{{ path('admin/support/demandings') }}"><i class="fa fa-circle-o"></i> Запросы номеров</a></li>
+					<li><a href="{{ path('admin/support/rejections') }}"><i class="fa fa-circle-o"></i> Спорные отказы</a></li>
+					
+				</ul>
+			</li>	
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dashboard"></i> <span>Публикации</span> <i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="{#{ path('admin/gates') }#}"><i class="fa fa-circle-o"></i> Новости</a></li>
+					<li><a href="{#{ path('admin/gates') }#}"><i class="fa fa-circle-o"></i> Документы</a></li>
+					<li><a href="{#{ path('admin/gates') }#}"><i class="fa fa-circle-o"></i> Справка</a></li>
+					<li><a href="{#{ path('admin/gates') }#}"><i class="fa fa-circle-o"></i> Посадочные страницы</a></li>
+				</ul>
+			</li>			
+			<li><a href="{{ path('admin/templates') }}"><i class="fa fa-dashboard"></i> <span>Шаблоны</span></a></li>
+			<li><a href="{{ path('admin/parameters') }}"><i class="fa fa-dashboard"></i> <span>Параметры</span></a></li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dashboard"></i> <span>ХЗ</span> <i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li><a href="{{ path('admin/spreads') }}"><i class="fa fa-circle-o"></i> Спреды</a></li>
+					<li><a href="{{ path('admin/tasks') }}"><i class="fa fa-circle-o"></i> Очередь</a></li>
+				</ul>
+			</li>
+		</ul>
+	</section>
+</aside>

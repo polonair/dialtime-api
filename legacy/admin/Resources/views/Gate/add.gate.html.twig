@@ -1,0 +1,36 @@
+{% extends 'AdminBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Управление шлюзами
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li class=""><a href="{{ path('admin/categories') }}"><i class="fa fa-list"></i> Список шлюзов</a></li>
+			<li class="active"><a href=""><i class="fa fa-plus"></i> Добавить шлюз</a></li>
+		</ul>
+		<div class="tab-content">
+			<form method="post" action="{{ path('admin/gate/add') }}" >
+				<input type="text" name="host" />
+        		<input type="text" name="dbuser" />
+        		<input type="text" name="dbpassword" />
+        		<input type="text" name="dbname" />
+        		<input type="text" name="dbport" />
+        		<input type="text" name="sshuser" />
+        		<input type="text" name="sshpassword" />
+				<input type="submit" />
+			</form>
+		</div>
+	</div>
+{% endblock %}

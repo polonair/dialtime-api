@@ -1,0 +1,56 @@
+{% extends 'PartnerBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Управление кампаниями
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li class=""><a href="{{ path('partner/dashboard') }}"><i class="fa fa-list"></i> Список кампаний</a></li>
+			<li class="active"><a href=""><i class="fa fa-plus"></i> Добавить кампанию</a></li>
+		</ul>
+		<div class="tab-content">
+			
+            <form method="post" action="{{ path('partner/campaign/add') }}" class="form-horizontal">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="selectCategory" class="col-sm-2 control-label">Выберите категорию услуг</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="selectCategory" name="category">
+					            {% for category in categories if category.parent is not null  %}<option value="{{ category.id }}">{{ category.name }}</option>{% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectLocation" class="col-sm-2 control-label">Выберите регион</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="selectLocation" name="location">
+					            {% for location in locations if location.parent is not null  %}<option value="{{ location.id }}">{{ location.name }}</option>{% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputBid" class="col-sm-2 control-label">Минимальная цена продажи</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputBid" name="bid">
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info pull-right">Sign in</button>
+                </div><!-- /.box-footer -->
+            </form>
+		</div>
+	</div>
+{% endblock %}

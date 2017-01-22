@@ -1,0 +1,41 @@
+{% extends 'MasterBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Служба поддержки
+		<small></small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('master/homepage') }}"><i class="fa fa-home"></i> Главная</a></li>
+		<li class="active"><i class="fa fa-dashboard"></i> Служба поддержки</a></li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{{ path('master/support') }}"><i class="fa fa-list"></i> Список обращений</a></li>
+			<li><a href="{{ path('master/support/ticket/add') }}"><i class="fa fa-plus"></i> Новое обращение</a></li>
+		</ul>
+		<div class="tab-content">
+			<table class="table table-striped">
+			    <thead><tr>
+                    <th style="width: 10px">#</th>
+                    <th>Тема</th>
+                    <th></th>
+                </tr></thead>
+                <tbody>
+				    {% for ticket in tickets %}
+                        <tr>
+                            <td>{{ ticket.id }}</td>
+                            <td>{{ ticket.theme }}</td>
+                            <td>{{ ticket.state }}</td>
+                        </tr>
+				    {% endfor %}
+                </tbody>
+            </table>
+		</div>
+	</div>
+{% endblock %}

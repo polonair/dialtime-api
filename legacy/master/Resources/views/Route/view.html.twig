@@ -1,0 +1,71 @@
+{% extends 'MasterBundle::page.html.twig' %}
+{% set _active = 'routes' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Рабочие контакты и звонки
+		<small></small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('master/homepage') }}"><i class="fa fa-home"></i> Главная</a></li>
+		<li class="active"><i class="fa fa-dashboard"></i> Контакты и звонки</a></li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li><a href=""><i class="fa fa-list"></i> Контакты</a></li>
+			<li><a href="{{ path('master/calls') }}"><i class="fa fa-list"></i> Звонки</a></li>
+            <li class="active"><a href=""><i class="fa fa-list"></i> Контакт {{ route.terminator.number }}</a></li>
+		</ul>
+		<div class="tab-content">
+            <ul>
+                <li>{{ route.id }}</li>
+                <li>{{ route.terminator.number }}</li>
+                <li>{{ route.expiredAt|date("Y.m.d H:i:s") }}</li>
+                <li><a href="{{ path('master/route/reject', {'id': route.id, 'reason': 'usual'}) }}">Получить прямой номер</a></li>
+                <li>
+                    <a href="{{ path('master/route/reject', {'id': route.id, 'reason': 'usual'}) }}">Удалить</a>
+                </li>
+                <li>
+                    <a href="{{ path('master/route/reject', {'id': route.id}) }}">Отказаться</a>
+                </li>
+            </ul>
+            <p>Звонки по контакту</p>
+            <ul>
+                {% for call in calls %}
+                    <li>{{ call.id }}</li>
+                    <li>{{ call.route.terminator.number }}</li>
+                    <li>{{ call.createdAt|date("Y.m.d H:i:s") }}</li>
+                    <li>{{ call.answerLength|date("i:s") }}</li>
+                    <li>
+                        {% if call.direction == "RG" %}
+                        Первичный
+                        {% elseif call.direction == "MO" %}
+                        Исходящий
+                        {% elseif call.direction == "MT" %}
+                        Входящий
+                        {% endif %}
+                    </li>
+                    <li>
+                        {% if call.record is null %}
+                        недоступна{% else %}
+                        прослушать{% endif %}
+                    </li>
+                    <li>---------------------------------</li>
+                {% endfor %}
+            </ul>
+            <p>Отказы</p>
+            <ul>
+                {% for rejection in rejections %}
+                    <li>{{ rejection.id }}</li>
+                    <li>{{ rejection.state }}</li>
+                    <li>---------------------------------</li>
+                {% endfor %}
+            </ul>
+		</div>
+	</div>
+{% endblock %}

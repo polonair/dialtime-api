@@ -1,0 +1,30 @@
+{% extends 'AdminBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Поддержка пользователей
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href=""><i class="fa fa-list"></i> Тикеты</a></li>
+			<li><a href=""><i class="fa fa-list"></i> Запросы номеров</a></li>
+		</ul>
+		<div class="tab-content">
+			<ul>
+				<li>{{ rejection.id }}</li>
+				<li>{{ rejection.state }}</li>
+			</ul>
+		</div>
+	</div>
+{% endblock %}

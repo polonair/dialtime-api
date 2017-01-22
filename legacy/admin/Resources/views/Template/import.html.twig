@@ -1,0 +1,33 @@
+{% extends 'AdminBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Управление шаблонами
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href=""><i class="fa fa-list"></i> Список шаблонов</a></li>
+			<li class=""><a href="{{ path('admin/template/add') }}"><i class="fa fa-plus"></i> Добавить шаблон</a></li>
+			<li class=""><a href="{{ path('admin/templates/export') }}"><i class="fa fa-download"></i> Экспорт шаблонов</a></li>
+			<li class=""><a href="{{ path('admin/templates/import') }}"><i class="fa fa-upload"></i> Импорт шаблонов</a></li>
+		</ul>
+		<div class="tab-content">
+            <form enctype="multipart/form-data" action="{{ path('admin/templates/import') }}" method="POST">
+                <input type="hidden" name="MAX_FILE_SIZE" value="1024000" />
+                <input name="userfile" type="file" />
+                <input type="submit" value="Send File" />
+            </form>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'PartnerBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Служба поддержки
+		<small></small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('partner/homepage') }}"><i class="fa fa-home"></i> Главная</a></li>
+		<li class="active"><i class="fa fa-dashboard"></i> Служба поддержки</a></li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li><a href="{{ path('partner/support') }}"><i class="fa fa-list"></i> Список обращений</a></li>
+			<li class="active"><a href="{{ path('partner/support/ticket/add') }}"><i class="fa fa-plus"></i> Новое обращение</a></li>
+		</ul>
+		<div class="tab-content">
+            <form method="post" action="{{ path('partner/support/ticket/add') }}">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="inputTheme" class="control-label">Тема</label>
+                        <input type="test" class="form-control" id="inputTheme" name="theme">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputMessage" class="control-label">Ваше сообщение</label>
+                        <textarea class="form-control" id="inputMessage" name="message" rows="6"></textarea>
+                    </div>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-info pull-right">Отправить обращение</button>
+                </div><!-- /.box-footer -->
+            </form>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'MasterBundle::page.html.twig' %}
+{% set _active = 'settings' %}
+
+{% block head_title %}TargetCall | Настройки{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+    .nav-tabs>li>a>span.nav-tab-text { display: none; }
+    .nav-tabs>li.active>a>span.nav-tab-text,
+    .nav-tabs>li>a:hover>span.nav-tab-text { display: inline-block; }
+  </style>
+{% endblock %}
+
+{% block content_header %}
+  <h1>Настройки <small></small></h1>
+  <ol class="breadcrumb">
+    <li><a href="{{ path('master/homepage') }}"><i class="fa fa-home"></i>Главная страница</a></li>
+    <li><a href="{{ path('master/dashboard') }}">Личный кабинет</a></li>
+    <li class="active">Настройки</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      <li><a href="{{ path('master/settings') }}"><i class="fa fa-gear"></i> <span class="nav-tab-text">Основные настройки</span></a></li>
+      <li class="active"><a href="{{ path('master/phones') }}"><i class="fa fa-phone"></i> <span class="nav-tab-text">Номера телефонов</span></a></li>
+      <li><a href="{{ path('master/schedules') }}"><i class="fa fa-clock-o"></i> <span class="nav-tab-text">Расписания</span></a></li>
+    </ul>
+    <div class="tab-content">
+      <div id="carousel" class="carousel slide col-xs-12" data-ride="carousel" data-interval="false">
+        <div class="carousel-inner" role="listbox">
+          <div class="item active">
+            <button id="add-phone" class="btn btn-primary btn-flat" type="submit"><i class="fa fa-plus"></i> Добавить номер</button>
+          </div>
+          <div class="item">
+            <form class="form-inline" method="post" action="{{ path('master/phone/add') }}">
+              <div class="input-group">
+                <input type="text" class="form-control" name="phone" value="" placeholder="Введите номер телефона">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary btn-flat" type="submit">Добавить номер</button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped">
+        <thead><tr>
+          <th>Номер</th>
+          <th>Основной</th>
+          <th>Подтверждение</th>
+          <th></th>
+        </tr></thead>
+        <tbody>
+          {% for phone in phones %}
+            <tr>
+              <td>{{ phone.number }}</td>
+              <td>{% if phone.main %}да{% else %}<a href="#" class="btn btn-primary btn-xs">Сделать основным</a>{% endif %}</td>
+              <td>{% if phone.confirmed %}есть{% else %}<a href="#" class="btn btn-primary btn-xs">Подтвердить</a>{% endif %}</td>
+              <td>{% if not phone.main %}<a href="#" class="btn btn-danger btn-xs">Удалить</a>{% endif %}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <script>
+    $("button#add-phone").click(function(){ $(".carousel").carousel('next'); });
+  </script>
+{% endblock %}

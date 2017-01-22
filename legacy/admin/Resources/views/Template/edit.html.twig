@@ -1,0 +1,76 @@
+{% extends 'AdminBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+  <h1>
+    Управление шаблонами
+    <small>it all starts here</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="#">Examples</a></li>
+    <li class="active">Blank page</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      <li class=""><a href="{{ path('admin/templates') }}"><i class="fa fa-list"></i> Список шаблонов</a></li>
+      <li class="active"><a href=""><i class="fa fa-pencil"></i> Редактирование шаблона «{{template.name}}»</a></li>
+      <li class=""><a href="{{ path('admin/template/add') }}"><i class="fa fa-plus"></i> Добавить шаблон</a></li>
+    </ul>
+    <div class="tab-content">
+              <form action="" method="post" id="edition">
+                <input type="text" name="name" value="{{ template.name }}" />
+                <div id="editor" style="height: 80px;">{{ template.source }}</div>
+                <input type="hidden" name="source" value="" />
+                <input type="submit" />
+              </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ static_host }}plugins/ace/src/ace.js"></script>
+	<script>
+
+		var editor = ace.edit("editor");
+        editor.getSession().setMode("ace/mode/twig");
+        editor.setAutoScrollEditorIntoView(true);
+        editor.setOption("maxLines", 20);
+        editor.setOption("minLines", 2);
+        editor.setOptions({
+            fontFamily: "Consolas",
+            fontSize: "14pt"
+        });
+        $("#edition").submit(function( event ) { $("input[name=source]").val(editor.getValue()); });
+    
+    </script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

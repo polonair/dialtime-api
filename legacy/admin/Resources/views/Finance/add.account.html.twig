@@ -1,0 +1,55 @@
+{% extends 'AdminBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Blank page
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li><a href="{{ path('admin/finance/accounts') }}"><i class="fa fa-list"></i> Счета</a></li>
+			<li class="active"><a href="{{ path('admin/finance/account/add') }}"><i class="fa fa-plus"></i> Добавить счет</a></li>
+		</ul>
+		<div class="tab-content">
+			<form action="{{ path('admin/finance/account/add') }}" method="post">
+				name: <input type="text" name="name" /><br />
+				owner: 
+				<select name="owner">
+					<option value="0" selected="">Nobody</option>
+					{% for owner in owners %}
+						<option value="{{ owner.id }}">{{ owner.username }}</option>
+					{% endfor %}
+				</select>
+				<br />
+				currency: 
+				<select name="currency">
+					{% for currency in currencies %}
+						<option value="{{ currency }}">{{ currency }}</option>
+					{% endfor %}
+				</select>
+				<br />
+				state: 
+				<select name="state">
+					{% for state in states %}
+						<option value="{{ state }}">{{ state }}</option>
+					{% endfor %}
+				</select>
+				<br />
+				credit: <input type="text" name="credit" value="0" /><br />
+				<button type="submit">Добавить счет</button>
+			</form>
+		</div>
+	</div>
+{% endblock %}
+
+

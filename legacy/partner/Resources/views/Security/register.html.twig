@@ -1,0 +1,34 @@
+{% extends 'PartnerBundle::base.html.twig' %}
+
+{% block head_title %}PartnerTC | Регистрация{% endblock %}
+
+{% block body_class %}hold-transition register-page{% endblock %}
+
+{% block _body %}
+    <div class="register-box">
+        <div class="register-logo">
+            <a href="{{ path('partner/homepage') }}"><b>Partner</b>TC</a>
+        </div>
+        <div class="register-box-body">
+            <p class="login-box-msg">Регистрация нового пользователя</p>
+            <form method="post" action="{{ path('partner/register') }}">
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control" placeholder="Ваш номер мобильного телефона" name="phone">
+                    <span class="fa fa-mobile-phone form-control-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Зарегистрироваться</button>
+                    </div><!-- /.col -->
+                </div>
+            </form>
+            <a href="{{ path('partner/login') }}" class="text-center">Я уже зарегистрирован</a>
+        </div><!-- /.form-box -->
+    </div><!-- /.register-box -->
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ static_host }}plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script src="{{ static_host }}bootstrap/js/bootstrap.min.js"></script>
+{% endblock %}
+

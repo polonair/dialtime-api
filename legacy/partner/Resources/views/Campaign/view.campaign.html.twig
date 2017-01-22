@@ -1,0 +1,51 @@
+{% extends 'PartnerBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Управление кампаниями
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li><a href="{{ path('partner/dashboard') }}"><i class="fa fa-list"></i> Список кампаний</a></li>
+			<li><a href=""><i class="fa fa-plus"></i> Добавить кампанию</a></li>
+			<li class="active"><a href=""><i class="fa fa-plus"></i> Кампания #{{ campaign.id }}</a></li>
+		</ul>
+		<div class="tab-content">
+			<ul>
+				<li>{{ campaign.id }}</li>
+				<li>{{ campaign.category.name }}</li>
+				<li>{{ campaign.location.name }}</li>
+				<li>{{ campaign.state }}</li>
+				<li>{{ campaign.bid }}</li>
+				<li>{{ campaign.createdAt|date("Y.m.d H:i") }}</li>
+			</ul>
+			<p>Номера:</p>
+			<ul>
+				{% for dongle in dongles %}
+					<li>#{{ dongle.id }} {{ dongle.number }}</li>
+				{% endfor %}
+				<li><a href="{{ path('partner/campaign/demand', {'id': campaign.id }) }}">Получить еще один номер</a></li>
+			</ul>
+			<p>Запросы номеров</p>
+			<ul>
+				{% for demanding in demandings %}
+					<li>#{{ demanding.id }} {{ demanding.state }} от {{ demanding.ticket.createdAt|date("Y.m.d H:i") }} </li>
+				{% endfor %}
+			</ul>			
+			{% if campaign.state == 'edit' %}
+				<a href="{{ path('partner/campaign/change', {'id': campaign.id, 'state': 'ACTIVE'}) }}">Актививровать</a>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

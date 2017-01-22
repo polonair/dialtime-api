@@ -1,0 +1,197 @@
+{% extends 'MasterBundle::page.html.twig' %}
+{% set _active = 'dashboard' %}
+
+{% macro print_offer(offer) %}
+  
+  {% if offer.state == 'on' %}
+    {% set bg = 'bg-green' %}
+    {% set btn = 'btn-success' %}
+
+    {% set a_rep = '' %}
+    {% set a_pla = 'active' %}
+    {% set a_pau = '' %}
+  {% elseif offer.state == 'off' %}
+    {% set bg = 'bg-red' %}
+    {% set btn = 'btn-danger' %}
+
+    {% set a_rep = '' %}
+    {% set a_pla = '' %}
+    {% set a_pau = 'active' %}
+  {% elseif offer.state == 'auto' %}
+    {% set bg = 'bg-aqua' %}
+    {% set btn = 'btn-info' %}
+
+    {% set a_rep = 'active' %}
+    {% set a_pla = 'active' %}
+    {% set a_pau = '' %}
+  {% else %}
+  {% endif %}
+
+  {% if offer.state != 'off' and offer.task is null %}
+    {% set bg = 'bg-yellow' %}
+    {% set btn = 'btn-warning' %}
+  {% endif %}
+
+  <div class="col-xs-12 col-sm-6">
+    <div class="info-box {{ bg }}">
+      <div class="info-box-content">
+        <span class="info-box-text">
+          {{ offer.category.name|replace({' ' : '&nbsp;'})|raw }}
+          {{ offer.location.locative|replace({' ' : '&nbsp;'})|raw }}
+          {{ 'до 18:59'|replace({' ' : '&nbsp;'})|raw }}
+        </span>
+        <span class="info-box-number">до {{ offer.ask }} руб.</span>
+
+        {% if offer.task is null %}
+          <div class="progress"><div class="progress-bar" style="width: 0%"></div></div>
+        {% else %}
+          <div class="progress"><div class="progress-bar" style="width: {{ offer.task.rate*100 }}%"></div></div>
+        {% endif %}
+        <span class="progress-description">
+          <div class="btn-group">
+            <a href="{{ path('master/offer/change', {'id': offer.id, 'state': 'auto'}) }}" class="btn btn-flat {{ btn }} btn-sm {{ a_rep }}"><i class="fa fa-repeat"></i></a>
+            <a href="{{ path('master/offer/change', {'id': offer.id, 'state': 'on'}) }}" class="btn btn-flat {{ btn }} btn-sm {{ a_pla }}"><i class="fa fa-play"></i></a>
+            <a href="{{ path('master/offer/change', {'id': offer.id, 'state': 'off'}) }}" class="btn btn-flat {{ btn }} btn-sm {{ a_pau }}"><i class="fa fa-pause"></i></a>
+            <a href="#" class="btn btn-flat {{ btn }} btn-sm"><i class="fa fa-pencil"></i></a>
+          </div>
+        </span>
+      </div><!-- /.info-box-content -->
+    </div><!-- /.info-box -->
+  </div><!-- /.col -->
+{% endmacro %}
+
+{% import _self as db %}
+
+{% block head_title %}TargetCall | Сводка{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+    .info-box-content { margin-left: 0px; }
+    .progress-description, .info-box-text { white-space: normal; }
+  </style>
+{% endblock %}
+
+{% block content_header %}
+  <h1>Сводка <small></small></h1>
+  <ol class="breadcrumb">
+    <li><a href="{{ path('master/homepage') }}"><i class="fa fa-home"></i>Главная страница</a></li>
+    <li>Личный кабинет</li>
+    <li class="active">Сводка</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-3 ">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-users"></i> Активные контакты</h3>
+        </div>
+        <div class="box-body">
+          {% if routes|length == 0 %}
+            <ul class="products-list product-list-in-box">
+              <li class="item">
+                <div class="product-info" style="margin: 0;">
+                  <p class="text-center">Вы не получали ни одного звонка</p>
+                </div>
+              </li><!-- /.item -->
+            </ul>
+          {% else %}
+            <ul class="products-list product-list-in-box">
+              <li class="item">
+                <div class="product-info" style="margin: 0;">
+                  <a href="#" class="product-title">+7&nbsp;929&nbsp;279&nbsp;10&nbsp;49</a>
+                </div>
+              </li>
+              <li class="item">
+                <div class="product-info" style="margin: 0;">
+                  <a href="#" class="product-title">+7&nbsp;909&nbsp;066&nbsp;81&nbsp;56</a>
+                </div>
+              </li>
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9 ">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-bullhorn"></i> Предложения</h3>
+          <div class="box-tools pull-right">
+            <button id="add-button" class="btn btn-sm btn-flat bg-purple" type="button" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus"></i> Добавить предложение</button>
+            <div id="add-modal" class="modal fade" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <form method="post" action="{{ path('master/offer/add') }}">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                      <h4 class="modal-title">Новое предложение</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                          <label for="selectCategory" class="control-label">Выберите категорию </label>
+                          <select class="form-control" id="selectCategory" name="category">
+                            {% for category in categories if category.parent is not null %}<option value="{{ category.id }}">{{ category.name }}</option>{% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="selectLocation" class="control-label">Выберите регион</label>
+                          <select class="form-control" id="selectLocation" name="location">
+                            {% for location in locations if location.parent is not null %}<option value="{{ location.id }}">{{ location.name }}</option>{% endfor %}
+                          </select>
+                        </div>
+                        {% if phones|length > 1 %}
+                          <div class="form-group">
+                            <label for="selectPhone" class="control-label">На какой номер принимать звонки</label>
+                            <select class="form-control" id="selectPhone" name="phone">
+                              {% for phone in phones %}<option value="{{ phone.id }}">{{ phone.number }}</option>{% endfor %}
+                            </select>
+                          </div>
+                        {% else %}
+                          <input type="hidden"  name="phone" value="{{ phones[0].id }}" />
+                        {% endif %}
+                        <div class="form-group">
+                          <label for="selectSchedule" class="control-label">Расписание</label>
+                          <select class="form-control" id="selectSchedule" name="schedule">
+                            {% for schedule in schedules %}<option value="{{ schedule.id }}">{{ schedule|schedule }}</option>{% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="inputAsk" class="control-label">Максимальная цена покупки</label>
+                          <input type="test" class="form-control" id="inputAsk" name="ask">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-sm btn-flat btn-default pull-left" data-dismiss="modal">Отмена</button>
+                      <button type="submit" class="btn btn-sm btn-flat bg-purple"><i class="fa fa-check"></i>Сохранить</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="box-body">
+          {% if offers|length == 0 %}
+            <center>
+              <p class="h3">Для получения звонков добавьте новое предложение услуг</p>
+              <button id="add-button" class="btn btn-lg btn-flat btn-danger" type="button" data-toggle="modal" data-target="#add-modal"><i class="fa fa-plus"></i> Добавить предложение</button>
+              <p class="h3">&nbsp;</p>
+            </center>
+          {% else %}
+            <div class="row">
+              {% for offer in offers %}
+                {{ db.print_offer(offer) }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+{% endblock %}

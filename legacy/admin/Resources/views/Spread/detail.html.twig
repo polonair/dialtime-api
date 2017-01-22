@@ -1,0 +1,34 @@
+{% extends 'AdminBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Blank page
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="{{ path('admin/finance/accounts') }}"><i class="fa fa-list"></i> Счета</a></li>
+			<li><a href="{{ path('admin/finance/account/add') }}"><i class="fa fa-plus"></i> Добавить счет</a></li>
+		</ul>
+		<div class="tab-content">
+			#{{ spread.id }} | "{{ spread.category.name }}" | "{{ spread.location.name }}" | {{ spread.value }} руб.
+			<ul>
+				{% for version in spread.history %}
+					<li>#{{ version.id }} | "{{ version.category.name }}" | "{{ version.location.name }}" | {{ version.value }} руб. | {{version.createdAt|date("Y.m.d H:i:s") }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+{% endblock %}
+
+

@@ -1,0 +1,32 @@
+{% extends 'AdminBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Управление категориями
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li><a href="{{ path('admin/servers') }}"><i class="fa fa-list"></i> Список серверов</a></li>
+			<li class="active"><a href="{{ path('admin/server/view', {'id': server.id }) }}"><i class="fa fa-plus"></i> Управление сервером #{{ server.id }}</a></li>
+			<li class="active"><a href="{{ path('admin/server/job/add', {'id': server.id }) }}"><i class="fa fa-plus"></i> Добавить задачу</a></li>
+		</ul>
+		<div class="tab-content">
+		    <form method="post" action="{{ path('admin/server/job/add', {'id': server.id }) }}">
+		        <input type="text" name="job" />
+		        <input type="text" name="order" />
+		        <input type="submit" />
+		    </form>
+		</div>
+	</div>
+{% endblock %}

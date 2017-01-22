@@ -1,0 +1,32 @@
+<aside class="main-sidebar">
+	<section class="sidebar">
+
+		<div class="user-panel">
+			<div class="info">
+				<p>{{ app.user.user.username }}</p>
+				<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+			</div>
+		</div>
+
+		<ul class="sidebar-menu">
+			<li class="header">ГЛАВНОЕ МЕНЮ</li>
+			<li{% if _active == 'dashboard' %} class="active"{% endif %}><a href="{{ path('partner/dashboard') }}"><i class="fa fa-dashboard"></i> <span>Сводка</span></a></li>
+			<li{% if _active == 'campaigns' %} class="active"{% endif %}><a href="{{ path('partner/campaigns') }}"><i class="fa fa-bullhorn"></i> <span>Кампании</span></a></li>
+			<li class="treeview{% if _active == 'statistics' or _active == 'calls' or _active == 'rejects' %} active{% endif %}">
+                <a href="#">
+                    <i class="fa fa-history"></i> <span>Журнал звонков</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li{% if _active == 'statistics' %} class="active"{% endif %}><a href="{{ path('partner/history/statistics') }}"><i class="fa fa-circle-o"></i> Сводная статистика</a></li>
+                    <li{% if _active == 'calls' %} class="active"{% endif %}><a href="{{ path('partner/history/calls') }}"><i class="fa fa-circle-o"></i> Звонки</a></li>
+                    <li{% if _active == 'rejects' %} class="active"{% endif %}><a href="{{ path('partner/history/rejects') }}"><i class="fa fa-circle-o"></i> Отказы</a></li>
+                </ul>
+            </li>
+			
+			
+			<li{% if _active == 'finance' %} class="active"{% endif %}><a href="{{ path('partner/finance') }}"><i class="fa fa-rouble"></i> <span>Финансы</span></a></li>
+			<li{% if _active == 'settings' %} class="active"{% endif %}><a href="{{ path('partner/settings') }}"><i class="fa fa-gears"></i> <span>Настройки</span></a></li>
+		</ul>
+	</section>
+</aside>

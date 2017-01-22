@@ -1,0 +1,36 @@
+<aside class="main-sidebar">
+	<section class="sidebar">
+
+		<div class="user-panel">
+			<div class="info">
+				<p>Баланс <span class=" pull-right">{{ app.user.user.mainAccount.balance }} <i class="fa fa-rouble"></i></span></p>
+				<p>Рейтинг <span class=" pull-right">{{ app.user.user.rateAccount.balance }} <i class="fa fa-star"></i></span></p>
+			</div>
+		</div>
+
+		<ul class="sidebar-menu">
+			<li class="header">ГЛАВНОЕ МЕНЮ</li>
+
+			<li{% if _active == 'dashboard' %} class="active"{% endif %}><a href="{{ path('master/dashboard') }}"><i class="fa fa-dashboard"></i> <span>Сводка</span></a></li>
+
+			<li class="treeview{% if _active == 'routes' %} active{% endif %}">
+              <a href="{{ path('master/routes') }}">
+                <i class="fa fa-phone"></i> <span>Журнал звонков</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li{% if _sub == 'active' %} class="active"{% endif %}><a href="{{ path('master/routes') }}"><i class="fa fa-check-circle"></i> Активные контакты</a></li>
+                <li{% if _sub == 'all' %} class="active"{% endif %}><a href="#"><i class="fa fa-list"></i> Все контакты</a></li>
+                <li{% if _sub == 'archive' %} class="active"{% endif %}><a href="#"><i class="fa fa-archive"></i> Архив</a></li>
+                <li{% if _sub == 'reject' %} class="active"{% endif %}><a href="#"><i class="fa fa-thumbs-down"></i> Отказы</a></li>
+                <li{% if _sub == 'forbid' %} class="active"{% endif %}><a href="#"><i class="fa fa-warning"></i> Запрещенные контакты</a></li>
+                <li{% if _sub == 'spam' %} class="active"{% endif %}><a href="#"><i class="fa fa-exclamation-circle"></i> Спам</a></li>
+              </ul>
+            </li>
+
+			<li{% if _active == 'finance' %} class="active"{% endif %}><a href="{{ path('master/finance') }}"><i class="fa fa-rouble"></i> <span>Финансы</span></a></li>
+
+			<li{% if _active == 'settings' %} class="active"{% endif %}><a href="{{ path('master/settings') }}"><i class="fa fa-gears"></i> <span>Настройки</span></a></li>
+		</ul>
+	</section>
+</aside>

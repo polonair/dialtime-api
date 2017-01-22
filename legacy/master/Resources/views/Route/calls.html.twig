@@ -1,0 +1,69 @@
+{% extends 'MasterBundle::page.html.twig' %}
+{% set _active = 'routes' %}
+
+{% block head_title %}TargetCall | Журнал звонков{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+    .nav-tabs>li>a>span.nav-tab-text { display: none; }
+    .nav-tabs>li.active>a>span.nav-tab-text,
+    .nav-tabs>li>a:hover>span.nav-tab-text { display: inline-block; }
+  </style>
+{% endblock %}
+
+{% block content_header %}
+  <h1>Журнал звонков <small></small></h1>
+  <ol class="breadcrumb">
+    <li><a href="{{ path('master/homepage') }}"><i class="fa fa-home"></i>Главная страница</a></li>
+    <li><a href="{{ path('master/dashboard') }}">Личный кабинет</a></li>
+    <li class="active">Журнал звонков</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs h5">
+      <li><a href="{{ path('master/routes') }}"><i class="fa fa-group"></i> <span class="nav-tab-text">Контакты</span></a></li>
+      <li class="active"><a href="{{ path('master/calls') }}"><i class="fa fa-phone"></i> <span class="nav-tab-text">Звонки</span></a></li>
+    </ul>
+    <div class="tab-content">
+      {% if calls|length == 0 %}
+            <center>
+              <p class="h3">Вы не получали ни одного звонка</p>
+              <p class="h3">&nbsp;</p>
+            </center>
+      {% else %}
+        <table class="table table-striped">
+          <thead><tr>
+            <th>#</th>
+            <th>Контакт</th>
+            <th>Время</th>
+            <th>Длительность</th>
+            <th>Направление</th>
+            <th>Запись разговора</th>
+          </tr></thead>
+          <tbody>
+            {% for call in calls %}
+              <tr>
+                <td>{{ call.id }}</td>
+                <td><a = href="{{ path('master/route/view', {'id': call.route.id}) }}">{{ call.route.terminator.number }}</a></td>
+                <td>{{ call.createdAt|date("Y.m.d H:i:s") }}</td>
+                <td>{{ call.answerLength|date("i:s") }}</td>
+                <td>
+                  {% if call.direction == "RG" %}Первичный
+                  {% elseif call.direction == "MO" %}Исходящий
+                  {% elseif call.direction == "MT" %}Входящий{% endif %}
+                </td>
+                <td>
+                  {% if call.record is null %}недоступна
+                  {% else %}<a href="{{ path('master/record', {'id': call.id}) }}">Скачать</a>{% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

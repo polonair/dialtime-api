@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="/app{% if app.environment == 'dev' %}_dev{% endif %}.php">
+        <meta charset="UTF-8">
+        <title>TargetCall | Загрузка...</title>
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <script src="{{ static_host }}js/polyfill.js" defer></script>
+        <script src="{{ static_host }}js/vendor.js" defer></script>
+        <script src="{{ static_host }}js/app.js" defer></script>
+    </head>
+    <body>
+        <tc-app>Загрузка...</tc-app>
+    </body>
+</html>

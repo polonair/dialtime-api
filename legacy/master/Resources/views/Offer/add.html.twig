@@ -1,0 +1,149 @@
+{% extends 'MasterBundle::page.html.twig' %}
+{% set _active = 'offers' %}
+
+{% block head_title %}TargetCall | Предложения{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+    .nav-tabs>li>a>span.nav-tab-text { display: none; }
+    .nav-tabs>li.active>a>span.nav-tab-text,
+    .nav-tabs>li>a:hover>span.nav-tab-text { display: inline-block; }
+  </style>
+{% endblock %}
+
+{% block content_header %}
+	<h1>Предложения <small></small></h1>
+	<ol class="breadcrumb">
+    <li><a href="{{ path('master/homepage') }}"><i class="fa fa-home"></i>Главная страница</a></li>
+    <li><a href="{{ path('master/dashboard') }}">Личный кабинет</a></li>
+    <li class="active">Предложения</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs h5">
+      <li class="active"><a href="#list" data-toggle="tab"><i class="fa fa-list"></i> <span class="nav-tab-text">Список предложений</span></a></li>
+      <li><a href="#add" data-toggle="tab"><i class="fa fa-plus"></i> <span class="nav-tab-text">Добавить новое предложение</span></a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="list">
+        {% if offers|length == 0 %}
+          <div class="box box-solid">
+            <div class="box-body">
+              <center>
+                <p class="h3">Для получения звонков добавьте новое предложение услуг</p>
+                <a href="#add" data-toggle="tab" class="btn btn-lg btn-danger"><i class="fa fa-plus"></i> <span class="nav-tab-text">Добавить новое предложение</span></a>
+                <p class="h3">&nbsp;</p>
+              </center>
+            </div>
+          </div>
+        {% else %}
+          <table class="table table-stripped">
+            <thead><tr>
+              <th></th>
+              <th>Категория</th>
+              <th>Регион</th>
+              <th>Расписание</th>
+              <th></th>
+              <th>Стоимость звонка</th>
+              <th>Номер телефона</th>
+              <th></th>
+            </tr></thead>
+            <tbody>
+              {% for offer in offers %}
+                <tr>
+                  <td>#{{ offer.id }}</td>
+                  <td>{{ offer.category.name }}</td>
+                  <td>{{ offer.location.name }}</td>
+                  <td>{{ offer.schedule|schedule() }}</td>
+                  <td>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-{% if offer.state == "on" %}success{% elseif offer.state == "off" %}danger{% elseif offer.state == "auto" %}primary{% endif %} btn-xs">
+                        {% if offer.state == "on" %}Включена{% elseif offer.state == "off" %}Отключена{% elseif offer.state == "auto" %}Авто{% endif %}
+                      </button>
+                      <button type="button" class="btn btn-{% if offer.state == "on" %}success{% elseif offer.state == "off" %}danger{% elseif offer.state == "auto" %}primary{% endif %} btn-xs dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        {% if offer.state != "on" %}<li><a href="{{ path('master/offer/change', {'id': offer.id, 'state': 'on' }) }}">Включить</a></li>{% endif %}
+                        {% if offer.state != "off" %}<li><a href="{{ path('master/offer/change', {'id': offer.id, 'state': 'off' }) }}">Отключить</a></li>{% endif %}
+                        {% if offer.state != "auto" %}<li><a href="{{ path('master/offer/change', {'id': offer.id, 'state': 'auto' }) }}">Авто</a></li>{% endif %}
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    {{ offer.ask }}
+                    <a class="btn btn-xs btn-primary" role="button" data-toggle="collapse" href="#askEdition-{{offer.id}}" aria-expanded="false" aria-controls="askEdition-{{offer.id}}"><i class="fa fa-pencil"></i> Изменить</a>
+                    <div class="collapse" id="askEdition-{{offer.id}}">
+                      <div class="well">
+                        <form class="form-inline" method="get" action="{{ path('master/offer/change', {'id': offer.id }) }}">
+                          <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" name="ask" value="{{ offer.ask }}">
+                            <span class="input-group-btn"><button class="btn btn-info btn-flat" type="submit">Сохранить</button></span>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ offer.phone.number }}</td>
+                  <td>
+                    <a class="btn btn-xs btn-danger" href=""><i class="fa fa-remove"></i> Удалить</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      </div><!-- /.tab-pane -->
+      <div class="tab-pane" id="add">
+        <form method="post" action="{{ path('master/offer/add') }}">
+          <div class="box-body">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="selectCategory" class="control-label">Выберите категорию </label>
+                <select class="form-control" id="selectCategory" name="category">
+                  {% for category in categories if category.parent is not null %}<option value="{{ category.id }}">{{ category.name }}</option>{% endfor %}
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="selectLocation" class="control-label">Выберите регион</label>
+                <select class="form-control" id="selectLocation" name="location">
+                  {% for location in locations if location.parent is not null %}<option value="{{ location.id }}">{{ location.name }}</option>{% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              {% if phones|length > 1 %}
+                <div class="form-group col-md-6">
+                  <label for="selectPhone" class="control-label">На какой номер принимать звонки</label>
+                  <select class="form-control" id="selectPhone" name="phone">
+                    {% for phone in phones %}<option value="{{ phone.id }}">{{ phone.number }}</option>{% endfor %}
+                  </select>
+                </div>
+              {% else %}
+                <input type="hidden"  name="phone" value="{{ phones[0].id }}" />
+              {% endif %}
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="selectSchedule" class="control-label">Расписание</label>
+                <select class="form-control" id="selectSchedule" name="schedule">
+                  {% for schedule in schedules %}<option value="{{ schedule.id }}">{{ schedule|schedule }}</option>{% endfor %}
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputAsk" class="control-label">Максимальная цена покупки</label>
+                <input type="test" class="form-control" id="inputAsk" name="ask">
+              </div>
+            </div>
+          </div><!-- /.box-body -->
+          <div class="box-footer">
+            <button type="submit" class="btn bg-purple pull-right">Добавить</button>
+          </div><!-- /.box-footer -->
+        </form>
+      </div><!-- /.tab-pane -->
+    </div><!-- /.tab-content -->
+  </div><!-- nav-tabs-custom -->
+{% endblock %}

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+	<route id="admin/homepage" path="/">
+		<default key="_controller">AdminBundle:Default:index</default>
+	</route>
+	<route id="admin/dashboard" path="/cabinet">
+		<default key="_controller">AdminBundle:Default:dashboard</default>
+	</route>
+
+	<route id="admin/dongles" path="/cabinet/dongles">
+		<default key="_controller">AdminBundle:Dongle:dongles</default>
+	</route>
+	<route id="admin/dongle/add" path="/cabinet/dongle/add">
+		<default key="_controller">AdminBundle:Dongle:addDongle</default>
+	</route>
+
+	<route id="admin/finance" path="/cabinet/finance">
+		<default key="_controller">AdminBundle:Finance:dashboard</default>
+	</route>
+	<route id="admin/finance/accounts" path="/cabinet/finance/accounts">
+		<default key="_controller">AdminBundle:Finance:accounts</default>
+	</route>
+	<route id="admin/finance/account/add" path="cabinet/finance/account/add">
+		<default key="_controller">AdminBundle:Finance:addAcccount</default>
+	</route>
+	<route id="admin/finance/transactions" path="/cabinet/finance/transactions">
+		<default key="_controller">AdminBundle:Finance:transactions</default>
+	</route>
+
+	<route id="admin/gates" path="/cabinet/gates">
+		<default key="_controller">AdminBundle:Gate:gates</default>
+	</route>
+	<route id="admin/gate/add" path="/cabinet/gate/add">
+		<default key="_controller">AdminBundle:Gate:addGate</default>
+	</route>
+
+	<route id="admin/parameters" path="/cabinet/parameters">
+		<default key="_controller">AdminBundle:Parameter:index</default>
+	</route>
+	<route id="admin/parameter/add" path="/cabinet/parameter/add">
+		<default key="_controller">AdminBundle:Parameter:addParameter</default>
+	</route>
+	<route id="admin/parameter/edit" path="/cabinet/parameter/edit/{id}">
+		<default key="_controller">AdminBundle:Parameter:editParameter</default>
+	</route>
+
+	<route id="admin/login" path="/login">
+		<default key="_controller">AdminBundle:Security:login</default>
+	</route>
+	<route id="admin/login_check" path="/login_check">
+		<default key="_controller">AdminBundle:Security:loginCheck</default>
+	</route>
+
+	<route id="admin/servers" path="/cabinet/servers">
+		<default key="_controller">AdminBundle:Server:index</default>
+	</route>
+	<route id="admin/server/add" path="/cabinet/server/add">
+		<default key="_controller">AdminBundle:Server:add</default>
+	</route>
+	<route id="admin/server/view" path="/cabinet/server/view/{id}">
+		<default key="_controller">AdminBundle:Server:view</default>
+	</route>
+	<route id="admin/server/do" path="/cabinet/server/do/{id}">
+		<default key="_controller">AdminBundle:Server:do</default>
+	</route>
+	<route id="admin/server/job/add" path="/cabinet/server/job/add/{id}">
+		<default key="_controller">AdminBundle:Server:addJob</default>
+	</route>
+
+	<route id="admin/support/rejection/view" path="/cabinet/support/rejection/view/{id}">
+		<default key="_controller">AdminBundle:Support:rejectionView</default>
+	</route>
+	<route id="admin/support/rejections" path="/cabinet/support/rejections">
+		<default key="_controller">AdminBundle:Support:rejections</default>
+	</route>
+	<route id="admin/support" path="/cabinet/support">
+		<default key="_controller">AdminBundle:Support:support</default>
+	</route>
+	<route id="admin/support/ticket/view" path="/cabinet/support/ticket/{id}">
+		<default key="_controller">AdminBundle:Support:viewTicket</default>
+	</route>
+	<route id="admin/support/demanding/resolve" path="/cabinet/support/demanding/resolve/{id}">
+		<default key="_controller">AdminBundle:Support:resolveDemanding</default>
+	</route>
+	<route id="admin/support/demandings" path="/cabinet/support/demandings">
+		<default key="_controller">AdminBundle:Support:demandings</default>
+	</route>
+	<route id="admin/support/demanding/view" path="/cabinet/support/demanding/{id}">
+		<default key="_controller">AdminBundle:Support:demandingView</default>
+	</route>
+
+	<route id="admin/categories" path="/cabinet/categories">
+		<default key="_controller">AdminBundle:Taxonomy:categories</default>
+	</route>
+	<route id="admin/category/add" path="/cabinet/category/add">
+		<default key="_controller">AdminBundle:Taxonomy:addCategory</default>
+	</route>
+	<route id="admin/locations" path="/cabinet/locations">
+		<default key="_controller">AdminBundle:Taxonomy:locations</default>
+	</route>
+	<route id="admin/location/add" path="/cabinet/location/add">
+		<default key="_controller">AdminBundle:Taxonomy:addLocation</default>
+	</route>
+
+	<route id="admin/templates/import" path="/cabinet/templates/import">
+		<default key="_controller">AdminBundle:Template:templatesImport</default>
+	</route>
+	<route id="admin/templates/export" path="/cabinet/templates/export">
+		<default key="_controller">AdminBundle:Template:templatesExport</default>
+	</route>
+	<route id="admin/templates" path="/cabinet/templates">
+		<default key="_controller">AdminBundle:Template:templates</default>
+	</route>
+	<route id="admin/template/add" path="/cabinet/template/add">
+		<default key="_controller">AdminBundle:Template:templateAdd</default>
+	</route>
+	<route id="admin/template/edit" path="/cabinet/template/edit/{id}">
+		<default key="_controller">AdminBundle:Template:templateEdit</default>
+	</route>
+
+	<route id="admin/spreads" path="/cabinet/spreads">
+		<default key="_controller">AdminBundle:Spread:spreads</default>
+	</route>
+	<route id="admin/spread/detail" path="/cabinet/spread/detail/{id}">
+		<default key="_controller">AdminBundle:Spread:spreadDetail</default>
+	</route>
+
+	<route id="admin/tasks" path="/cabinet/tasks">
+		<default key="_controller">AdminBundle:Task:tasks</default>
+	</route>
+	
+</routes>

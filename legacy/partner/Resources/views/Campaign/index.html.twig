@@ -1,0 +1,49 @@
+{% extends 'PartnerBundle::page.html.twig' %}
+{% set _active = 'campaigns' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Blank page
+		<small>it all starts here</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="#">Examples</a></li>
+		<li class="active">Blank page</li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li class="active"><a href=""><i class="fa fa-list"></i> Список кампаний</a></li>
+			<li class=""><a href="{{ path('partner/campaign/add') }}"><i class="fa fa-plus"></i> Добавить кампанию</a></li>
+		</ul>
+		<div class="tab-content">
+			<table class="table table-striped">
+			    <thead><tr>
+                    <th style="width: 10px">#</th>
+                    <th>Категория</th>
+                    <th>Локация</th>
+                    <th></th>
+                    <th>Стоимость звонка</th>
+                    <th></th>
+                </tr></thead>
+                <tbody>
+				    {% for campaign in campaigns %}
+                        <tr>
+                            <td>{{ campaign.id }}</td>
+                            <td>{{ campaign.category.name }}</td>
+                            <td>{{ campaign.location.name }}</td>
+                            <td>{{ campaign.state }}</td>
+                            <td>{{ campaign.bid }}</td>
+                            <td><a href="{{ path('partner/campaign/view', {'id': campaign.id }) }}">View</a></td>
+                        </tr>
+				    {% endfor %}
+                </tbody>
+            </table>
+		</div>
+	</div>
+{% endblock %}

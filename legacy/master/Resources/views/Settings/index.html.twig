@@ -1,0 +1,156 @@
+{% extends 'MasterBundle::page.html.twig' %}
+{% set _active = 'settings' %}
+
+{% block head_title %}TargetCall | Настройки{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <style type="text/css">
+    .nav-tabs>li>a>span.nav-tab-text { display: none; }
+    .nav-tabs>li.active>a>span.nav-tab-text,
+    .nav-tabs>li>a:hover>span.nav-tab-text { display: inline-block; }
+  </style>
+{% endblock %}
+
+{% block content_header %}
+  <h1>Настройки <small></small></h1>
+  <ol class="breadcrumb">
+    <li><a href="{{ path('master/homepage') }}"><i class="fa fa-home"></i>Главная страница</a></li>
+    <li><a href="{{ path('master/dashboard') }}">Личный кабинет</a></li>
+    <li class="active">Настройки</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <!-- ---------------------------------------------------------------- -->
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Личные данные</h3>
+          <div class="box-tools">
+            <button id="edit-button" class="btn btn-sm btn-flat bg-purple" type="button" data-toggle="modal" data-target="#editprofile-model"><i class="fa fa-pencil"></i> Редактировать</button>
+            <div id="editprofile-model" class="modal fade" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <form method="post" action="{{ path('master/offer/add') }}">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                      <h4 class="modal-title">Личные данные</h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-sm btn-flat btn-default pull-left" data-dismiss="modal">Отмена</button>
+                      <button type="submit" class="btn btn-sm btn-flat bg-purple"><i class="fa fa-check"></i> Сохранить</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="box-body">
+          <!-- div class="row">
+            <div class="col-xs-4"><strong>Имя</strong></div>
+            <div class="col-xs-8">Фамилия Имя Отчество</div>
+          </div -->
+          <div class="row">
+            <div class="col-xs-4"><strong>Логин</strong></div>
+            <div class="col-xs-8">{{ user.username }}</div>
+          </div>
+          <!-- div class="row">
+            <div class="col-xs-4"><strong>E-mail</strong></div>
+            <div class="col-xs-8">[email]</div>
+          </div -->
+        </div>
+      </div>
+    </div>
+    <!-- ---------------------------------------------------------------- -->
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">
+      <div class="row">
+        <div class="col-xs-12 col-lg-6">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Телефоны</h3>
+              <div class="box-tools">
+                <a href="#" type="button" class="btn btn-sm btn-flat bg-purple pull-right"><i class="fa fa-plus"></i> Добавить</a>
+              </div>
+            </div>
+            <div class="box-body">
+              <table class="table"><tbody>
+                <tr>
+                  <td style="border-top-width: 0px;"></td>
+                  <td style="border-top-width: 0px; width: 64px;"></td>
+                  <td style="border-top-width: 0px; width: 48px;"></td>
+                </tr>
+                {% for phone in phones %}
+                  <tr>
+                    <td>{{ phone.number }}</td>
+                    <td>
+                      <div class="btn-group">
+                        {% if phone.main %}
+                          <a href="#" class="btn btn-flat btn-default btn-xs">
+                            <i class="fa fa-circle"></i>
+                          </a>
+                        {% else %}
+                          <a href="#" class="btn btn-flat btn-default btn-xs">
+                            <i class="fa fa-circle-o"></i>
+                          </a>
+                        {% endif %}
+                        {% if phone.confirmed %}
+                          <a href="#" class="btn btn-flat btn-default btn-xs">
+                            <i class="fa fa-check-square-o"></i>
+                          </a>
+                        {% else %}
+                          <a href="#" class="btn btn-flat btn-default btn-xs">
+                            <i class="fa fa-square-o"></i>
+                          </a>
+                        {% endif %}
+                      </div>
+                    <td><a href="#" class="btn btn-flat btn-xs btn-primary"><i class="fa fa-trash"></i></a></td>
+                  </tr>
+                {% else %}
+                {% endfor %}
+              </tbody></table>
+            </div>
+          </div>      
+        </div>
+        <!-- ---------------------------------------------------------------- -->
+        <div class="col-xs-12 col-lg-6">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Расписания</h3>
+              <div class="box-tools">
+                <a href="#" type="button" class="btn btn-sm btn-flat bg-purple pull-right"><i class="fa fa-plus"></i> Добавить</a>
+              </div>
+            </div>
+            <div class="box-body">
+              <table class="table"><tbody>
+                <tr>
+                  <td style="border-top-width: 0px;"></td>
+                  <td style="border-top-width: 0px; width: 40px;"></td>
+                  <td style="border-top-width: 0px; width: 60px;"></td>
+                </tr>
+                {% for schedule in schedules %}
+                  <tr>
+                    <td>{{ schedule|schedule }}</td>
+                    <td><!-- a href="#" class="btn btn-flat btn-default btn-xs"><i class="fa fa-check-square-o fa-square-o"></i></a --></td>
+                    <td>
+                      <div class="btn-group">
+                        <a href="#" class="btn btn-flat btn-xs btn-primary"><i class="fa fa-pencil"></i></a>
+                        <a href="#" class="btn btn-flat btn-xs btn-primary"><i class="fa fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>                  
+                {% else %}
+                {% endfor %}
+              </tbody></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ---------------------------------------------------------------- -->
+  </div>
+{% endblock %}

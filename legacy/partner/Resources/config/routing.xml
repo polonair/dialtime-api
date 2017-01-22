@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="partner/campaign/demand" path="/cabinet/campaign/demand/{id}">
+		<default key="_controller">PartnerBundle:Campaign:demandCampaign</default>
+	</route>
+	<route id="partner/campaign/view" path="/cabinet/campaign/view/{id}">
+		<default key="_controller">PartnerBundle:Campaign:viewCampaign</default>
+	</route>
+	<route id="partner/campaign/change" path="/cabinet/campaign/change/{id}">
+		<default key="_controller">PartnerBundle:Campaign:changeCampaign</default>
+	</route>
+	<route id="partner/campaign/add" path="/cabinet/campaign/add">
+		<default key="_controller">PartnerBundle:Campaign:addCampaign</default>
+	</route>
+	<route id="partner/campaigns" path="/cabinet/campaigns">
+		<default key="_controller">PartnerBundle:Campaign:dashboard</default>
+	</route>
+
+	<route id="partner/homepage" path="/">
+		<default key="_controller">PartnerBundle:Default:index</default>
+	</route>
+	<route id="partner/dashboard" path="/cabinet">
+		<default key="_controller">PartnerBundle:Default:dashboard</default>
+	</route>
+	<route id="partner/about" path="/about">
+		<default key="_controller">PartnerBundle:Default:about</default>
+	</route>
+
+	<route id="partner/finance" path="/cabinet/finance">
+		<default key="_controller">PartnerBundle:Finance:finance</default>
+	</route>
+
+	<route id="partner/help" path="/help">
+		<default key="_controller">PartnerBundle:Help:index</default>
+	</route>
+
+	<route id="partner/history/statistics" path="/cabinet/history/statistics">
+		<default key="_controller">PartnerBundle:History:history</default>
+	</route>
+	<route id="partner/history/calls" path="/cabinet/history/calls">
+		<default key="_controller">PartnerBundle:History:calls</default>
+	</route>
+	<route id="partner/history/rejects" path="/cabinet/history/rejects">
+		<default key="_controller">PartnerBundle:History:rejects</default>
+	</route>
+	<route id="partner/history/reject/accept" path="/cabinet/history/reject/accept/{id}">
+		<default key="_controller">PartnerBundle:History:rejectAccept</default>
+	</route>
+	<route id="partner/history/reject/decline" path="/cabinet/history/reject/decline/{id}">
+		<default key="_controller">PartnerBundle:History:rejectDecline</default>
+	</route>
+
+	<route id="partner/rating" path="/cabinet/rating">
+		<default key="_controller">PartnerBundle:Rating:rating</default>
+	</route>
+
+	<route id="partner/login" path="/login">
+		<default key="_controller">PartnerBundle:Security:login</default>
+	</route>
+	<route id="partner/recover" path="/recover">
+		<default key="_controller">PartnerBundle:Security:recover</default>
+	</route>
+	<route id="partner/register" path="/register">
+		<default key="_controller">PartnerBundle:Security:register</default>
+	</route>
+	<route id="partner/login_check" path="/login_check">
+		<default key="_controller">PartnerBundle:Security:loginCheck</default>
+	</route>
+
+	<route id="partner/settings" path="/cabinet/settings">
+		<default key="_controller">PartnerBundle:Settings:settings</default>
+	</route>
+
+	<route id="partner/support" path="/cabinet/support">
+		<default key="_controller">PartnerBundle:Support:support</default>
+	</route>
+	<route id="partner/support/ticket/add" path="/cabinet/support/ticket/add">
+		<default key="_controller">PartnerBundle:Support:supportAddTicket</default>
+	</route>
+	
+</routes>

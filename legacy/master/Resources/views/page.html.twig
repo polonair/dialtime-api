@@ -1,0 +1,27 @@
+{% extends 'MasterBundle::base.html.twig' %}
+{% set _active = _active|default('nothing') %}
+{% set _sub = _sub|default('nothing') %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link rel="stylesheet" href="{{ static_host }}dist/css/skins/skin-purple.min.css">
+{% endblock %}
+
+{% block body_class %}hold-transition skin-purple sidebar-mini{% endblock %}
+
+{% block _body %}
+  <div class="wrapper">
+    {% include 'MasterBundle:Common:_main_header.html.twig' %}
+    {% include 'MasterBundle:Common:_main_sidebar.html.twig' %}
+    <div class="content-wrapper">
+      <section class="content-header">
+        {% block content_header %}{% endblock %}
+      </section>
+      <section class="content">
+        {% block content %}{% endblock %}
+      </section><!-- /.content -->
+    </div>
+    {% include 'MasterBundle:Common:_main_footer.html.twig' %}
+    {#% include 'MasterBundle:Common:_control_sidebar.html.twig' %#}
+  </div>
+{% endblock %}

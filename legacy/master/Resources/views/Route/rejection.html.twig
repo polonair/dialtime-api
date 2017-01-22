@@ -1,0 +1,28 @@
+{% extends 'MasterBundle::page.html.twig' %}
+{% set _active = 'routes' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Рабочие контакты и звонки
+		<small></small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('master/homepage') }}"><i class="fa fa-home"></i> Главная</a></li>
+		<li class="active"><i class="fa fa-dashboard"></i> Контакты и звонки</a></li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li><a href=""><i class="fa fa-list"></i> Контакты</a></li>
+			<li><a href="{{ path('master/calls') }}"><i class="fa fa-list"></i> Звонки</a></li>
+		</ul>
+		<div class="tab-content">
+            <p><a href="{{ path('master/route/reject', {'id': route.id, 'reason': 'spam'}) }}">Это спам!</a></p>
+            <p><a href="{{ path('master/route/reject', {'id': route.id, 'reason': 'noresult'}) }}">Безрезультатный контакт</a></p>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'PartnerBundle::page.html.twig' %}
+{% set _active = 'rejects' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+	<h1>
+		Настройки
+		<small></small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="{{ path('partner/homepage') }}"><i class="fa fa-home"></i> Главная</a></li>
+		<li class="active"><i class="fa fa-dashboard"></i> Настройки</a></li>
+	</ol>
+{% endblock %}
+
+{% block content %}
+	<div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+			<li><a href="{{ path('partner/history/statistics') }}"><i class="fa fa-list"></i> Сводная статистика</a></li>
+			<li><a href="{{ path('partner/history/calls') }}"><i class="fa fa-list"></i> Звонки</a></li>
+			<li class="active"><a href="{{ path('partner/history/rejects') }}"><i class="fa fa-list"></i> Отказы</a></li>
+		</ul>
+		<div class="tab-content">
+		    <table class="table table-striped">
+			    <thead><tr>
+                    <th>#</th>
+                    <th></th>
+                    <th></th>
+                </tr></thead>
+                <tbody>
+				    {% for rejection in rejections %}
+                        <tr>
+                            <td>{{ rejection.id }}</td>
+                            <td>{{ rejection.state }}</td>
+                            <td><a href="{{ path('partner/history/reject/accept', {'id': rejection.id }) }}">Accept</a></td>
+                            <td><a href="{{ path('partner/history/reject/decline', {'id': rejection.id }) }}">Decline</a></td>
+                        </tr>
+				    {% endfor %}
+                </tbody>
+            </table>
+		</div>
+	</div>
+{% endblock %}

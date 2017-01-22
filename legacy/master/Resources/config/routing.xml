@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+	<route id="master/api" path="/api">
+		<default key="_controller">MasterBundle:Api:api</default>
+	</route>  
+
+	<route id="master/payapi" path="/payapi/{provider}">
+		<default key="_controller">MasterBundle:Api:payApi</default>
+	</route>   
+
+	<route id="master/page" path="/{path}">
+		<default key="_controller">MasterBundle:Default:page</default>
+        <requirement key="path">.*</requirement>
+	</route>    
+    <!--route id="master/confirm/phone" path="/cabinet/confirm/phone">
+		<default key="_controller">MasterBundle:Confirm:confirmPhone</default>
+	</route>
+
+	<route id="master/homepage" path="/">
+		<default key="_controller">MasterBundle:Default:index</default>
+	</route>
+	<route id="master/dashboard" path="/cabinet">
+		<default key="_controller">MasterBundle:Default:dashboard</default>
+	</route>
+	<route id="master/about" path="/about">
+		<default key="_controller">MasterBundle:Default:about</default>
+	</route>
+
+	<route id="master/finance/fillup/result" path="/cabinet/finance/fillup/result">
+		<default key="_controller">MasterBundle:Finance:fillupResult</default>
+	</route>
+	<route id="master/finance/fillup" path="/cabinet/finance/fillup">
+		<default key="_controller">MasterBundle:Finance:financeFillup</default>
+	</route>
+	<route id="master/finance" path="/cabinet/finance">
+		<default key="_controller">MasterBundle:Finance:finance</default>
+	</route>
+	<route id="master/finance/tcpay" path="/cabinet/finance/tcpay">
+		<default key="_controller">MasterBundle:Finance:testProvider</default>
+	</route>
+	<route id="master/finance/payapi" path="/payapi/{provider}">
+		<default key="_controller">MasterBundle:Finance:payApi</default>
+	</route>
+
+	<route id="master/help" path="/help">
+		<default key="_controller">MasterBundle:Help:index</default>
+	</route>
+	<route id="master/help/page" path="/help/{page_name}">
+		<default key="_controller">MasterBundle:Help:page</default>
+		<requirement key="page_name">.+</requirement>
+	</route>
+
+	<route id="master/offer/change" path="/cabinet/offer/change/{id}">
+		<default key="_controller">MasterBundle:Offer:changeOffer</default>
+	</route>
+	<route id="master/offer/add" path="/cabinet/offer/add">
+		<default key="_controller">MasterBundle:Offer:addOffer</default>
+	</route>
+	<route id="master/offers" path="/cabinet/offers">
+		<default key="_controller">MasterBundle:Offer:offers</default>
+	</route>
+
+	<route id="master/phones" path="/cabinet/settings/phones">
+		<default key="_controller">MasterBundle:Phone:phones</default>
+	</route>
+	<route id="master/phone/add" path="/cabinet/settings/phone/add">
+		<default key="_controller">MasterBundle:Phone:phoneAdd</default>
+	</route>
+
+	<route id="master/rating" path="/cabinet/rating">
+		<default key="_controller">MasterBundle:Rating:rating</default>
+	</route>
+
+	<route id="master/routes" path="/cabinet/routes">
+		<default key="_controller">MasterBundle:Route:routes</default>
+	</route>
+	<route id="master/calls" path="/cabinet/calls">
+		<default key="_controller">MasterBundle:Route:calls</default>
+	</route>
+	<route id="master/record" path="/cabinet/record/{id}">
+		<default key="_controller">MasterBundle:Route:record</default>
+	</route>
+	<route id="master/route/reject" path="/cabinet/route/reject/{id}">
+		<default key="_controller">MasterBundle:Route:routeReject</default>
+	</route>
+	<route id="master/route/view" path="/cabinet/route/view/{id}">
+		<default key="_controller">MasterBundle:Route:routeView</default>
+	</route>
+	<route id="master/route/rejection/cancel" path="/cabinet/route/cancel-rejection/{id}">
+		<default key="_controller">MasterBundle:Route:cancelRejection</default>
+	</route>
+
+	<route id="master/schedules" path="/cabinet/settings/schedules">
+		<default key="_controller">MasterBundle:Schedule:schedules</default>
+	</route>
+	<route id="master/schedule/add" path="/cabinet/settings/schedule/add">
+		<default key="_controller">MasterBundle:Schedule:scheduleAdd</default>
+	</route>
+
+	<route id="master/login" path="/login">
+		<default key="_controller">MasterBundle:Security:login</default>
+	</route>
+	<route id="master/recover" path="/recover">
+		<default key="_controller">MasterBundle:Security:recover</default>
+	</route>
+	<route id="master/register" path="/register">
+		<default key="_controller">MasterBundle:Security:register</default>
+	</route>
+	<route id="master/login_check" path="/login_check">
+		<default key="_controller">MasterBundle:Security:loginCheck</default>
+	</route>
+
+	<route id="master/settings" path="/cabinet/settings">
+		<default key="_controller">MasterBundle:Settings:settings</default>
+	</route>
+
+	<route id="master/support" path="/cabinet/support">
+		<default key="_controller">MasterBundle:Support:support</default>
+	</route>
+	<route id="master/support/ticket/add" path="/cabinet/support/ticket/add">
+		<default key="_controller">MasterBundle:Support:supportAddTicket</default>
+	</route -->
+	
+</routes>

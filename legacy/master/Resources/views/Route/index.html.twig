@@ -1,0 +1,98 @@
+{% extends 'MasterBundle::page.html.twig' %}
+{% set _active = 'routes' %}
+{% set _sub = 'active' %}
+
+{% block head_title %}TargetCall | Журнал звонков{% endblock %}
+
+{% block content_header %}
+  <h1>Журнал звонков <small></small></h1>
+  <ol class="breadcrumb">
+    <li><a href="{{ path('master/homepage') }}"><i class="fa fa-home"></i>Главная страница</a></li>
+    <li><a href="{{ path('master/dashboard') }}">Личный кабинет</a></li>
+    <li class="active">Журнал звонков</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title"><i class="fa fa-check-circle"></i> Активные контакты</h3>
+    </div><!-- /.box-header -->
+    <div class="box-body">
+      <div class="box-group" id="accordion">
+        {% for route in routes %}
+          <div class="panel box no-border">
+            <div class="box-header with-border">
+              <div class="row">
+                <a data-toggle="collapse" data-parent="#accordion" href="#r{{ route.id }}">
+                  <div class="col-xs-5 col-sm-3 col-md-3 col-lg-2">
+                    <span class="h4"><i class="fa fa-check-circle text-success"></i></span>&nbsp;&nbsp;
+                    <span class="h4">#{{ route.id }}</span>
+                  </div>
+                  <div class="col-xs-7 col-sm-4 col-md-3 col-lg-2">
+                    <span class="h4"><b>+{{route.terminator.number}}</b></span>
+                    <div class="small text-muted">Всего 15 звонков</div>
+                  </div>
+                </a>
+                <div class="hidden-xs hidden-sm hidden-md col-lg-2"></div>
+                <div class="hidden-xs col-sm-5 col-md-2 col-lg-2">
+                  <span class="small text-muted">
+                    первый звонок <b>2&nbsp;дня назад</b><br/>
+                    последний звонок <b>3&nbsp;минуты назад</b>
+                  </span>
+                </div>
+                <div class="visible-xs visible-sm col-xs-5 col-sm-3 col-md-3 col-lg-3"></div>
+                <div class="col-xs-7 col-sm-4 col-md-1 col-lg-2">
+                  <span class="text-muted">
+                    <b>000&nbsp;руб</b>
+                  </span>
+                </div>
+                <div class="visible-xs col-xs-5 col-sm-3 col-md-3 col-lg-3"></div>
+                <div class="col-xs-7 col-sm-5 col-md-3 col-lg-2">
+                  <a href="#" class="btn btn-xs btn-primary btn-flat"><i class="fa fa-archive"></i> В архив</a>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-xs btn-danger dropdown-toggle btn-flat" data-toggle="dropdown">
+                      Удалить <span class="caret"></span><span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#"><i class="fa fa-thumbs-down"></i> Отказаться</a></li>
+                      <li><a href="#"><i class="fa fa-warning"></i> Запретить</a></li>
+                      <li><a href="#"><i class="fa fa-exclamation-circle"></i> Спам</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="r{{ route.id }}" class="panel-collapse collapse">
+              <div class="box-body">
+                {% for call in route.attachment.calls %}
+                <div class="row">
+                  <div class="col-xs-1"></div>
+                  <div class="col-xs-1">
+                    <p>#{{ call.id }}</p>
+                  </div>
+                  <div class="col-xs-2">
+                    {{ call.createdAt|date("Y.m.d H:i") }}
+                  </div>
+                  <div class="col-xs-1">
+                    {{ call.answerLength|date("i:s") }}
+                  </div>
+                  <div class="col-xs-1">
+                    исходящий
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-xs btn-default btn-flat"><i class="fa fa-play"></i> Прослушать</button>
+                      <button type="button" class="btn btn-xs btn-default btn-flat"><i class="fa fa-download"></i> Скачать</button>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}   
+      </div>
+    </div><!-- /.box-body -->
+  </div>
+{% endblock %}

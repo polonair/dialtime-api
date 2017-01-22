@@ -1,0 +1,32 @@
+{% extends 'AdminBundle::page.html.twig' %}
+
+{% block head_title %}AdminLTE 2 | Blank Page{% endblock %}
+
+{% block content_header %}
+  <h1>
+    Управление шаблонами
+    <small>it all starts here</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+    <li><a href="#">Examples</a></li>
+    <li class="active">Blank page</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+  <div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+      <li class=""><a href="{{ path('admin/templates') }}"><i class="fa fa-list"></i> Список шаблонов</a></li>
+      <li class="active"><a href=""><i class="fa fa-plus"></i> Добавить шаблон</a></li>
+    </ul>
+    <div class="tab-content">
+
+              <form action="" method="post">
+                <input type="text" name="name" />
+                <textarea name="source"></textarea>
+                <input type="submit" />
+              </form>     
+    </div>
+  </div>
+{% endblock %}
