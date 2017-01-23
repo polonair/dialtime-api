@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -25,7 +26,7 @@ class MasterController extends Controller
     {
         return $this->render('ApiBundle::master.html.twig', []);
     }
-    public function payApiAction(Request $rq)
+    public function payApiAction(Request $request)
     {
         $provider = $request->attributes->get('provider', null);
         if ($provider == "robokassa")
@@ -35,12 +36,17 @@ class MasterController extends Controller
                 $amount = $request->request->get("OutSum");
                 $trid = $request->request->get("InvId");
                 $signature = $request->request->get("SignatureValue");
-                if ($signature === md5("$amount:$trid:d2p9Nq4nKj6o"))
+                $my = strtoupper(md5("$amount:$trid:d2p9Nq4nKj6o"));
+                if ($signature === $my)
                 {
                     $em = $this->get('doctrine')->getManager();
                     $transaction = $em->getRepository("ModelBundle:Transaction")->find($trid);
                     $em->getRepository("ModelBundle:Transaction")->doApply($transaction);
                     return new Response("OK$trid");
+                }
+                else
+                {
+                    return new Response("FAIL $amount $trid $signature $my");
                 }
             }
         }
@@ -54,7 +60,7 @@ class MasterController extends Controller
         $em = $this->get('doctrine')->getManager();
         $this->session = $em->getRepository("ModelBundle:Session")->loadSession($auth_key);
         $result = [];
-    	$request = json_decode($rq->getContent(), true);
+        $request = json_decode($rq->getContent(), true);
         if (array_key_exists("action", $request)) $result = $this->getResult($request, $rq);
         elseif (array_key_exists("rqid", $request[0]))
         {
@@ -279,6 +285,7 @@ class MasterController extends Controller
                 "offer" => $entry->getTask()->getOffer()->getId(),
                 "direct" => null,
                 "cost" => 240.0, //$entry->getAttachment()["cost"],
+                "state" => strtoupper($entry->getState()),
             ];
             return [ "result" => "ok", "data" => $result ];
         }
@@ -497,7 +504,7 @@ class MasterController extends Controller
             $em->flush();
         }
 
-    	return [ "result" => "ok" ];
+        return [ "result" => "ok" ];
     }
     private function offer_create($request, $rq)
     {
