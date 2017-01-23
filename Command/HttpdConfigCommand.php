@@ -26,9 +26,9 @@ class HttpdConfigCommand extends ContainerAwareCommand
     }
     protected function execute(InputInterface $input, OutputInterface $output) 
     {
-        $this->config($input->getOption('admin'), $input->getOption('path'))
-        $this->config($input->getOption('manager'), $input->getOption('path'))
-        $this->config($input->getOption('master'), $input->getOption('path'))
+        $this->config($input->getOption('admin'), $input->getOption('path'));
+        $this->config($input->getOption('manager'), $input->getOption('path'));
+        $this->config($input->getOption('master'), $input->getOption('path'));
         $this->config($input->getOption('partner'), $input->getOption('path'));
     }    
     public function config($host, $path, $itk = true)
