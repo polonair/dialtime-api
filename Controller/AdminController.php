@@ -13,7 +13,7 @@ class AdminController extends Controller
 
     public function pageAction(Request $request)
     {
-        return $this->render('ApiBundle::partner.html.twig', []);
+        return $this->render('ApiBundle::admin.html.twig', []);
     }
     public function apiAction(Request $rq)
     {

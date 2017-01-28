@@ -58,7 +58,7 @@ class MasterController extends Controller
         $auth_key = $rq->headers->get("x-tc-authkey");
 
         $em = $this->get('doctrine')->getManager();
-        $this->session = $em->getRepository("ModelBundle:Session")->loadSession($auth_key);
+        $this->session = $em->getRepository("ModelBundle:Session")->loadSession($auth_key, 'MASTER');
         $result = [];
         $request = json_decode($rq->getContent(), true);
         if (array_key_exists("action", $request)) $result = $this->getResult($request, $rq);
