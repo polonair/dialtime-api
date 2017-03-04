@@ -21,6 +21,16 @@ class PartnerController extends Controller
     }
     public function apiAction(Request $rq)
     {
+        /*return $this->get('dialtime.api.processor')->init('PARTNER')->getResponse();
+        return $this->get('dialtime.api.processor')->getResponse('PARTNER');
+        $processor;
+        $requests = $processor->getApiRequests();
+        foreach($requests as $request)
+        {
+            $processor->pushResponse($this->getResult2());
+
+        }*/
+
         $auth_key = $rq->headers->get("x-tc-authkey");
 
         $em = $this->get('doctrine')->getManager();
@@ -55,21 +65,89 @@ class PartnerController extends Controller
             case "dongle.get": $result = $this->dongle_get($request, $rq); break;
             case "demanding.get": $result = $this->demanding_get($request, $rq); break;
             case "demand": $result = $this->demand($request, $rq); break;
-            /*
-            case "offer.get": $result = $this->offer_get($request, $rq); break;
-            case "offer.set.ask": $result = $this->offer_set_ask($request, $rq); break;
-            case "task.get": $result = $this->task_get($request, $rq); break;
-            case "schedule.get": $result = $this->schedule_get($request, $rq); break;
-            case "transaction.get": $result = $this->transaction_get($request, $rq); break;
+            case "message.get": $result = $this->message_get($request, $rq); break;
+            case "partner.get": $result = $this->partner_get($request, $rq); break;
             case "route.get": $result = $this->route_get($request, $rq); break;
-            case "schedule.set.intervals": $result = $this->schedule_set_intervals($request, $rq); break;
-            case "offer.set.state": $result = $this->offer_set_state($request, $rq);  break;
-            case "offer.remove": $result = $this->offer_remove($request, $rq); break;
-            case "account.get": $result = $this->account_get($request, $rq); break;
-            case "fillup.get.link": $result = $this->fillup_get_link($request, $rq); break;*/
+            case "ticket.get": $result = $this->ticket_get($request, $rq); break;
+            case "transaction.get": $result = $this->transaction_get($request, $rq); break;
             default: break;
         }
         return $result;
+    }
+    private function message_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];  
+    }
+    private function partner_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];  
+    }
+    private function route_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];  
+    }
+    private function ticket_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];  
+    }
+    private function transaction_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            //$entry = $em->getRepository("ModelBundle:Transaction")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];  
     }
     private function demand($request, $rq)
     {
@@ -218,8 +296,11 @@ class PartnerController extends Controller
             $result = [
                 "counter" => time() - 3600, // '- 3600' - only for local system!
                 "entities" => [
-                    "campaign" =>$em->getRepository("ModelBundle:Campaign")->loadAllIdsForPartner($partner, $request["data"]),
-                    "call" =>$em->getRepository("ModelBundle:Call")->loadAllIdsForPartner($partner, $request["data"]),
+                    "campaign" => $em->getRepository("ModelBundle:Campaign")->loadAllIdsForPartner($partner, $request["data"]),
+                    //"partner" => $em->getRepository("ModelBundle:Partner")->loadAllIdsForPartner($partner, $request["data"]),
+                    "route" => $em->getRepository("ModelBundle:Route")->loadAllIdsForPartner($partner, $request["data"]),
+                    "ticket" => $em->getRepository("ModelBundle:Ticket")->loadAllIdsForPartner($partner, $request["data"]),
+                    "transaction" => $em->getRepository("ModelBundle:Transaction")->loadAllIdsForPartner($partner, $request["data"]),
                 ]
             ];
 
