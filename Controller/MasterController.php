@@ -16,7 +16,12 @@ use Polonairs\Dialtime\ModelBundle\Entity\Offer;
 use Polonairs\Dialtime\ModelBundle\Entity\Session;    
 use Polonairs\Dialtime\ModelBundle\Entity\Transaction;   
 use Polonairs\Dialtime\ModelBundle\Entity\TransactionEntry;  
-use Polonairs\Dialtime\ModelBundle\Entity\Account;    	
+use Polonairs\Dialtime\ModelBundle\Entity\Account; 
+use Polonairs\Dialtime\ModelBundle\Entity\User;
+use Polonairs\Dialtime\ModelBundle\Entity\Master;
+use Polonairs\Dialtime\ModelBundle\Entity\Phone;
+use Polonairs\Dialtime\ModelBundle\Entity\Auth;
+use Polonairs\SmsiBundle\Smsi\SmsMessage;
 
 class MasterController extends Controller
 {
@@ -59,6 +64,7 @@ class MasterController extends Controller
 
         $em = $this->get('doctrine')->getManager();
         $this->session = $em->getRepository("ModelBundle:Session")->loadSession($auth_key, 'MASTER');
+        dump($this->session);
         $result = [];
         $request = json_decode($rq->getContent(), true);
         if (array_key_exists("action", $request)) $result = $this->getResult($request, $rq);
@@ -78,6 +84,7 @@ class MasterController extends Controller
         switch($request["action"])
         {
             case "login": $result = $this->login($request, $rq); break;
+            case "register": $result = $this->register($request, $rq); break;
             case "is.logged.in": $result = $this->isLoggedIn($request, $rq); break;
             case "logout": $result = $this->logout($request, $rq); break;
             case "category.get": $result = $this->category_get($request, $rq); break;
@@ -487,6 +494,120 @@ class MasterController extends Controller
         }
         return [ "result" => "fail" ];
     }
+    public function registerMaster($username, $password, $timezone, $ip = "unknown")
+    {
+        $em = $this->get('doctrine')->getManager();
+
+        $roles = $em->getRepository("ModelBundle:User")->loadUserRoles($username);
+
+        if (count($roles) === 0)
+        {
+            $em->getConnection()->beginTransaction();
+
+            $user = (new User())
+                ->setUsername($username);
+            $master = (new Master())
+                ->setUser($user);
+            $phone = (new Phone())
+                ->setNumber($username)
+                ->setOwner($user);
+            $account = (new Account())
+                ->setBalance(0)
+                ->setCurrency(Account::CURRENCY_RUR)
+                ->setOwner($user)
+                ->setState(Account::STATE_ACTIVE);
+            $rate = (new Account())
+                ->setBalance(0)
+                ->setCurrency(Account::CURRENCY_TCR)
+                ->setOwner($user)
+                ->setState(Account::STATE_ACTIVE);
+            $encoded = password_hash($password, PASSWORD_BCRYPT, [ 'cost' => 12 ]);
+            $schedule = (new Schedule())
+                ->setOwner($user)
+                ->setTimezone($timezone);
+            for ($i = 0; $i < 5; $i++)
+            {
+                $int = (new Interval())
+                    ->setSchedule($schedule)
+                    ->setFrom(10*60 + 1440*$i)
+                    ->setTo(18*60 + 1440*$i - 1);
+                $em->persist($int);
+            }
+            $user
+                ->setMainAccount($account)
+                ->setRateAccount($rate)
+                ->setPassword($encoded)
+                ->setMainSchedule($schedule);
+            $auth = (new Auth())
+                ->setType(Auth::TYPE_REGISTRATION)
+                ->setUser($user)
+                ->setIp($ip)
+                ->setCabinet(Auth::CABINET_MASTER);
+
+            $em->persist($schedule);
+            $em->persist($user);
+            $em->persist($master);
+            $em->persist($phone);
+            $em->persist($account);
+            $em->persist($rate);
+            $em->persist($auth);
+
+            $em->flush();
+            $em->getConnection()->commit();
+        }
+        else
+        {
+            if (array_key_exists("master", $roles)) throw new UserAlreadyRegisteredException($username);
+            else throw new UserHaveAnotherRoleException($username);
+        }
+    }
+    public function normalizeLogin($username)
+    {
+        if ($username === null) return null;
+        $phone = str_replace(["+", "-", "(", ")", " ", ".", "/", "\\", "*"], "", $username);
+        if (preg_match("#[78]?(9[0-9]{9})#", $phone, $matches)) return "7".$matches[1];
+        return $username;
+    }
+    public function createPassword($length, $source)
+    {
+        $result = "";
+        $count = strlen($source);
+        for ($i = 0; $i < $length; $i++) $result .= substr($source, rand(0, $count), 1);
+        return $result;
+    }
+    private function register($request, $rq)
+    {
+        if ($this->session == null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $sm = $this->get('polonairs.smsi');
+
+            $passwordLength = 5;
+            $passwordPattern = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+            $password = $this->createPassword($passwordLength, $passwordPattern);
+            $username = $request["data"]["username"];
+            $timezone = $request["data"]["timezone"];
+            $username = $this->normalizeLogin($username);
+
+            if ($username !== null)
+            {
+                try
+                {
+                    $this->registerMaster($username, $password, -$timezone, $rq->getClientIp());
+                    $sms = (new SmsMessage())
+                        ->setTo($username)
+                        ->setText("Вы успешно зарегистрировались. Ваш пароль: $password");
+                    $sm->send($sms);
+                    return [ "result" => "ok", "data" => "+$username" ];
+                }
+                catch(UserAlreadyRegisteredException $e) { }
+                catch(UserHaveAnotherRoleException $e) { }
+            }
+        }
+        return [ "result" => "fail" ];
+    }
     private function isLoggedIn($request, $rq)
     {
         if ($this->session !== null) return [ "result" => "yes" ];
@@ -497,7 +618,7 @@ class MasterController extends Controller
         $auth_key = $rq->headers->get("x-tc-authkey");
 
         $em = $this->get('doctrine')->getManager();
-        $session = $em->getRepository("ModelBundle:Session")->loadSession($auth_key);
+        $session = $em->getRepository("ModelBundle:Session")->loadSession($auth_key, "MASTER");
         if ($session)
         {
             $session->close();
