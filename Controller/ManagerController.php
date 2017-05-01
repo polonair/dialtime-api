@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Polonairs\Dialtime\ModelBundle\Entity\Session;  
+use Polonairs\Dialtime\ModelBundle\Entity\DongleDemanding; 
+use Polonairs\Dialtime\ModelBundle\Entity\Ticket;  
 
 class ManagerController extends Controller
 {
@@ -51,23 +53,6 @@ class ManagerController extends Controller
             case "demanding.get": $result = $this->demanding_get($request, $rq); break;
             case "dongle.get": $result = $this->dongle_get($request, $rq); break;
             case "demanding.resolve": $result = $this->demanding_resolve($request, $rq); break;
-
-            /*
-            case "category.get": $result = $this->category_get($request, $rq); break;
-            case "location.get": $result = $this->location_get($request, $rq); break;
-            case "offer.create": $result = $this->offer_create($request, $rq); break;
-            case "offer.get": $result = $this->offer_get($request, $rq); break;
-            case "offer.set.ask": $result = $this->offer_set_ask($request, $rq); break;
-            case "task.get": $result = $this->task_get($request, $rq); break;
-            case "schedule.get": $result = $this->schedule_get($request, $rq); break;
-            case "transaction.get": $result = $this->transaction_get($request, $rq); break;
-            case "route.get": $result = $this->route_get($request, $rq); break;
-            case "call.get": $result = $this->call_get($request, $rq); break;
-            case "schedule.set.intervals": $result = $this->schedule_set_intervals($request, $rq); break;
-            case "offer.set.state": $result = $this->offer_set_state($request, $rq);  break;
-            case "offer.remove": $result = $this->offer_remove($request, $rq); break;
-            case "account.get": $result = $this->account_get($request, $rq); break;
-            case "fillup.get.link": $result = $this->fillup_get_link($request, $rq); break;*/
             default: break;
         }
         return $result;
@@ -98,15 +83,24 @@ class ManagerController extends Controller
 
             $user = $this->session->getOwner();
             $manager = $em->getRepository("ModelBundle:Manager")->loadManagerByUser($user);
-
-            /*$entry = $em->getRepository("ModelBundle:User")->loadFreeClient($manager, $request["data"]);
-            if ($entry["master"] !== null) $entry["master"]->setManager($manager);
-            if ($entry["partner"] !== null) $entry["partner"]->setManager($manager);
-            $em->flush();*/
-            
+            dump($request);
+            $ticket = $em->getRepository("ModelBundle:Ticket")->find($request["data"]["ticket"]);
+            $demanding = $em->getRepository("ModelBundle:DongleDemanding")->loadOneForTicket( $ticket);
+            if ($demanding !== null && $demanding->getState() === DongleDemanding::STATE_WAIT)
+            {
+                $dongle = $em->getRepository("ModelBundle:Dongle")->find($request["data"]['dongle']);
+                $demanding
+                    ->setDongle($dongle)
+                    ->setState(DongleDemanding::STATE_ACCEPTED);
+                $dongle->setCampaign($demanding->getCampaign());
+                $ticket->setState(Ticket::STATE_CLOSE);
+                $em->flush();
+            }            
             return [ "result" => "ok" ];
         }
         return [];
+
+
     }
     private function dongle_get($request, $rq)
     {

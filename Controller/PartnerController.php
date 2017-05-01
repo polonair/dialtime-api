@@ -5,11 +5,22 @@ namespace Polonairs\Dialtime\ApiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Polonairs\Dialtime\ModelBundle\Entity\Session;  
+use Symfony\Component\HttpFoundation\Response; 
 use Polonairs\Dialtime\ModelBundle\Entity\Campaign;
 use Polonairs\Dialtime\ModelBundle\Entity\Ticket;
 use Polonairs\Dialtime\ModelBundle\Entity\DongleDemanding;
+use Polonairs\Dialtime\ModelBundle\Entity\Schedule;
+use Polonairs\Dialtime\ModelBundle\Entity\Interval; 
+use Polonairs\Dialtime\ModelBundle\Entity\Offer;    
+use Polonairs\Dialtime\ModelBundle\Entity\Session;    
+use Polonairs\Dialtime\ModelBundle\Entity\Transaction;   
+use Polonairs\Dialtime\ModelBundle\Entity\TransactionEntry;  
+use Polonairs\Dialtime\ModelBundle\Entity\Account; 
+use Polonairs\Dialtime\ModelBundle\Entity\User;
+use Polonairs\Dialtime\ModelBundle\Entity\Partner;
+use Polonairs\Dialtime\ModelBundle\Entity\Phone;
+use Polonairs\Dialtime\ModelBundle\Entity\Auth;
+use Polonairs\SmsiBundle\Smsi\SmsMessage;
 
 class PartnerController extends Controller
 {
@@ -54,6 +65,7 @@ class PartnerController extends Controller
         switch($request["action"])
         {
             case "login": $result = $this->login($request, $rq); break;
+            case "register": $result = $this->register($request, $rq); break;
             case "is.logged.in": $result = $this->isLoggedIn($request, $rq); break;
             case "logout": $result = $this->logout($request, $rq); break;
             case "campaign.get": $result = $this->campaign_get($request, $rq); break;
@@ -384,5 +396,106 @@ class PartnerController extends Controller
             return [ "result" => "ok", "data" => $result ];
         }
         return [];
-    }    
+    }
+    public function registerPartner($username, $password, $timezone, $ip = "unknown")
+    {
+        $em = $this->get('doctrine')->getManager();
+
+        $roles = $em->getRepository("ModelBundle:User")->loadUserRoles($username);
+
+        if (count($roles) === 0)
+        {
+            $em->getConnection()->beginTransaction();
+
+            $user = (new User())
+                ->setUsername($username);
+            $partner = (new Partner())
+                ->setUser($user);
+            $phone = (new Phone())
+                ->setNumber($username)
+                ->setOwner($user);
+            $account = (new Account())
+                ->setBalance(0)
+                ->setCurrency(Account::CURRENCY_RUR)
+                ->setOwner($user)
+                ->setState(Account::STATE_ACTIVE);
+            $rate = (new Account())
+                ->setBalance(0)
+                ->setCurrency(Account::CURRENCY_TCR)
+                ->setOwner($user)
+                ->setState(Account::STATE_ACTIVE);
+            $encoded = password_hash($password, PASSWORD_BCRYPT, [ 'cost' => 12 ]);
+            $user
+                ->setMainAccount($account)
+                ->setRateAccount($rate)
+                ->setPassword($encoded);
+            $auth = (new Auth())
+                ->setType(Auth::TYPE_REGISTRATION)
+                ->setUser($user)
+                ->setIp($ip)
+                ->setCabinet(Auth::CABINET_PARTNER);
+
+            $em->persist($user);
+            $em->persist($partner);
+            $em->persist($phone);
+            $em->persist($account);
+            $em->persist($rate);
+            $em->persist($auth);
+
+            $em->flush();
+            $em->getConnection()->commit();
+        }
+        else
+        {
+            if (array_key_exists("partner", $roles)) throw new UserAlreadyRegisteredException($username);
+            else throw new UserHaveAnotherRoleException($username);
+        }
+    }
+    public function normalizeLogin($username)
+    {
+        if ($username === null) return null;
+        $phone = str_replace(["+", "-", "(", ")", " ", ".", "/", "\\", "*"], "", $username);
+        if (preg_match("#[78]?(9[0-9]{9})#", $phone, $matches)) return "7".$matches[1];
+        return $username;
+    }
+    public function createPassword($length, $source)
+    {
+        $result = "";
+        $count = strlen($source);
+        for ($i = 0; $i < $length; $i++) $result .= substr($source, rand(0, $count), 1);
+        return $result;
+    }
+    private function register($request, $rq)
+    {
+        if ($this->session == null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $sm = $this->get('polonairs.smsi');
+
+            $passwordLength = 5;
+            $passwordPattern = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+            $password = $this->createPassword($passwordLength, $passwordPattern);
+            $username = $request["data"]["username"];
+            $timezone = $request["data"]["timezone"];
+            $username = $this->normalizeLogin($username);
+
+            if ($username !== null)
+            {
+                try
+                {
+                    $this->registerPartner($username, $password, -$timezone, $rq->getClientIp());
+                    $sms = (new SmsMessage())
+                        ->setTo($username)
+                        ->setText("Вы успешно зарегистрировались. Ваш пароль: $password");
+                    $sm->send($sms);
+                    return [ "result" => "ok", "data" => "+$username" ];
+                }
+                catch(UserAlreadyRegisteredException $e) { }
+                catch(UserHaveAnotherRoleException $e) { }
+            }
+        }
+        return [ "result" => "fail" ];
+    }
 }
