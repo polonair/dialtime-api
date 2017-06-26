@@ -64,21 +64,21 @@ class PartnerController extends Controller
         $result = [];
         switch($request["action"])
         {
-            case "login": $result = $this->login($request, $rq); break;
-            case "register": $result = $this->register($request, $rq); break;
-            case "is.logged.in": $result = $this->isLoggedIn($request, $rq); break;
-            case "logout": $result = $this->logout($request, $rq); break;
+            case "call.get": $result = $this->call_get($request, $rq); break;
             case "campaign.get": $result = $this->campaign_get($request, $rq); break;
             case "check": $result = $this->check($request, $rq); break;
-            case "call.get": $result = $this->call_get($request, $rq); break;
-            case "location.get": $result = $this->location_get($request, $rq); break;
-            case "category.get": $result = $this->category_get($request, $rq); break;
             case "campaign.create": $result = $this->campaign_create($request, $rq); break;
-            case "dongle.get": $result = $this->dongle_get($request, $rq); break;
-            case "demanding.get": $result = $this->demanding_get($request, $rq); break;
+            case "category.get": $result = $this->category_get($request, $rq); break;
             case "demand": $result = $this->demand($request, $rq); break;
+            case "demanding.get": $result = $this->demanding_get($request, $rq); break;
+            case "dongle.get": $result = $this->dongle_get($request, $rq); break;
+            case "is.logged.in": $result = $this->isLoggedIn($request, $rq); break;
+            case "location.get": $result = $this->location_get($request, $rq); break;
+            case "login": $result = $this->login($request, $rq); break;
+            case "logout": $result = $this->logout($request, $rq); break;
             case "message.get": $result = $this->message_get($request, $rq); break;
             case "partner.get": $result = $this->partner_get($request, $rq); break;
+            case "register": $result = $this->register($request, $rq); break;
             case "route.get": $result = $this->route_get($request, $rq); break;
             case "ticket.get": $result = $this->ticket_get($request, $rq); break;
             case "transaction.get": $result = $this->transaction_get($request, $rq); break;
@@ -86,7 +86,7 @@ class PartnerController extends Controller
         }
         return $result;
     }
-    private function message_get($request, $rq)
+    private function call_get($request, $rq)
     {
         if ($this->session !== null) 
         {
@@ -95,130 +95,10 @@ class PartnerController extends Controller
             $user = $this->session->getOwner();
             $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
 
-            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
-            $result = [ ];
-            return [ "result" => "ok", "data" => $result ];
-        }
-        return [];  
-    }
-    private function partner_get($request, $rq)
-    {
-        if ($this->session !== null) 
-        {
-            $em = $this->get('doctrine')->getManager();
-
-            $user = $this->session->getOwner();
-            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
-
-            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
-            $result = [ ];
-            return [ "result" => "ok", "data" => $result ];
-        }
-        return [];  
-    }
-    private function route_get($request, $rq)
-    {
-        if ($this->session !== null) 
-        {
-            $em = $this->get('doctrine')->getManager();
-
-            $user = $this->session->getOwner();
-            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
-
-            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
-            $result = [ ];
-            return [ "result" => "ok", "data" => $result ];
-        }
-        return [];  
-    }
-    private function ticket_get($request, $rq)
-    {
-        if ($this->session !== null) 
-        {
-            $em = $this->get('doctrine')->getManager();
-
-            $user = $this->session->getOwner();
-            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
-
-            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
-            $result = [ ];
-            return [ "result" => "ok", "data" => $result ];
-        }
-        return [];  
-    }
-    private function transaction_get($request, $rq)
-    {
-        if ($this->session !== null) 
-        {
-            $em = $this->get('doctrine')->getManager();
-
-            $user = $this->session->getOwner();
-            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
-
-            //$entry = $em->getRepository("ModelBundle:Transaction")->loadOneForPartner($partner, $request["data"]);
-            $result = [ ];
-            return [ "result" => "ok", "data" => $result ];
-        }
-        return [];  
-    }
-    private function demand($request, $rq)
-    {
-        if ($this->session !== null) 
-        {
-            $em = $this->get('doctrine')->getManager();
-
-            $user = $this->session->getOwner();
-            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
-
-            $campaign = $em->getRepository("ModelBundle:Campaign")->loadOneForPartner($partner, $request["data"]);
-
-            $ticket = (new Ticket())
-                ->setTheme("Запрос номера")
-                ->setClient($user);
-            $demanding = (new DongleDemanding())
-                ->setTicket($ticket)
-                ->setCampaign($campaign);
-            $em->persist($ticket);
-            $em->persist($demanding);
-            $em->flush();
-
-            return [ "result" => "ok" ];
-        }
-        return [];    
-    }
-    private function dongle_get($request, $rq)
-    {
-        if ($this->session !== null) 
-        {
-            $em = $this->get('doctrine')->getManager();
-
-            $user = $this->session->getOwner();
-            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
-
-            $entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            $entry = $em->getRepository("ModelBundle:Call")->loadOneForPartner($partner, $request["data"]);
             dump($entry);
             $result = [
                 "id" => $entry->getId(),
-                "number" => $entry->getNumber()
-            ];
-            return [ "result" => "ok", "data" => $result ];
-        }
-        return [];        
-    }
-    private function demanding_get($request, $rq)
-    {
-        if ($this->session !== null) 
-        {
-            $em = $this->get('doctrine')->getManager();
-
-            $user = $this->session->getOwner();
-            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
-
-            $entry = $em->getRepository("ModelBundle:DongleDemanding")->loadOneForPartner($partner, $request["data"]);
-            dump($entry);
-            $result = [
-                "id" => $entry->getId(),
-                "state" => $entry->getState()
             ];
             return [ "result" => "ok", "data" => $result ];
         }
@@ -254,24 +134,6 @@ class PartnerController extends Controller
         }
         return [];
     }
-    private function call_get($request, $rq)
-    {
-        if ($this->session !== null) 
-        {
-            $em = $this->get('doctrine')->getManager();
-
-            $user = $this->session->getOwner();
-            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
-
-            $entry = $em->getRepository("ModelBundle:Call")->loadOneForPartner($partner, $request["data"]);
-            dump($entry);
-            $result = [
-                "id" => $entry->getId(),
-            ];
-            return [ "result" => "ok", "data" => $result ];
-        }
-        return [];
-    }
     private function campaign_get($request, $rq)
     {
         if ($this->session !== null) 
@@ -295,6 +157,32 @@ class PartnerController extends Controller
             return  [ "result" => "ok", "data" => $result ];
         }
         return [];
+    }
+    private function category_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $category = $em->getRepository("ModelBundle:Category")->loadOne($request["data"]);
+            $children = $em->getRepository("ModelBundle:Category")->loadChildrenFor($category);
+            $result = [
+                "id"    => $category->getId(),
+                "name" => $category->getName(),
+                "children" => [],
+            ];
+            foreach ($children as $child) $result["children"][] = $child->getId();
+
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];
+    }
+    public function createPassword($length, $source)
+    {
+        $result = "";
+        $count = strlen($source);
+        for ($i = 0; $i < $length; $i++) $result .= substr($source, rand(0, $count), 1);
+        return $result;
     }
     private function check($request, $rq)
     {
@@ -320,43 +208,73 @@ class PartnerController extends Controller
         }
         return [];
     }
-    private function login($request, $rq)
+    private function demand($request, $rq)
     {
-        $em = $this->get('doctrine')->getManager();
-
-        $master = $em->getRepository("ModelBundle:Partner")
-            ->loadUser($request["data"]["username"], $request["data"]["password"]);
-
-        if ($master != null)
+        if ($this->session !== null) 
         {
-            $this->session = new Session();
-            $this->session
-                ->setRealm('PARTNER')
-                ->setOwner($master->getUser());
-            $em->persist($this->session);
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            $campaign = $em->getRepository("ModelBundle:Campaign")->loadOneForPartner($partner, $request["data"]);
+
+            $ticket = (new Ticket())
+                ->setTheme("Запрос номера")
+                ->setClient($user);
+            $demanding = (new DongleDemanding())
+                ->setTicket($ticket)
+                ->setCampaign($campaign);
+            $em->persist($ticket);
+            $em->persist($demanding);
             $em->flush();
-            return [ "result" => "ok", "data" => $this->session->getId() ];
+
+            return [ "result" => "ok" ];
         }
-        return [ "result" => "fail" ];
+        return [];    
+    }
+    private function demanding_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            $entry = $em->getRepository("ModelBundle:DongleDemanding")->loadOneForPartner($partner, $request["data"]);
+            dump($entry);
+            $result = [
+                "id" => $entry->getId(),
+                "state" => $entry->getState()
+            ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];
+    }
+    private function dongle_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            $entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            dump($entry);
+            $result = [
+                "id" => $entry->getId(),
+                "number" => $entry->getNumber()
+            ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];        
     }
     private function isLoggedIn($request, $rq)
     {
         if ($this->session !== null) return [ "result" => "yes" ];
         return [ "result" => "no" ];
-    }
-    private function logout($request, $rq)
-    {
-        $auth_key = $rq->headers->get("x-tc-authkey");
-
-        $em = $this->get('doctrine')->getManager();
-        $session = $em->getRepository("ModelBundle:Session")->loadSession($auth_key);
-        if ($session)
-        {
-            $session->close();
-            $em->flush();
-        }
-
-        return [ "result" => "ok" ];
     }
     private function location_get($request, $rq)
     {
@@ -378,24 +296,108 @@ class PartnerController extends Controller
         }
         return [];
     }
-    private function category_get($request, $rq)
+    private function login($request, $rq)
+    {
+        $em = $this->get('doctrine')->getManager();
+
+        $master = $em->getRepository("ModelBundle:Partner")
+            ->loadUser($request["data"]["username"], $request["data"]["password"]);
+
+        if ($master != null)
+        {
+            $this->session = new Session();
+            $this->session
+                ->setRealm('PARTNER')
+                ->setOwner($master->getUser());
+            $em->persist($this->session);
+            $em->flush();
+            return [ "result" => "ok", "data" => $this->session->getId() ];
+        }
+        return [ "result" => "fail" ];
+    }
+    private function logout($request, $rq)
+    {
+        $auth_key = $rq->headers->get("x-tc-authkey");
+
+        $em = $this->get('doctrine')->getManager();
+        $session = $em->getRepository("ModelBundle:Session")->loadSession($auth_key);
+        if ($session)
+        {
+            $session->close();
+            $em->flush();
+        }
+
+        return [ "result" => "ok" ];
+    }
+    private function message_get($request, $rq)
     {
         if ($this->session !== null) 
         {
             $em = $this->get('doctrine')->getManager();
 
-            $category = $em->getRepository("ModelBundle:Category")->loadOne($request["data"]);
-            $children = $em->getRepository("ModelBundle:Category")->loadChildrenFor($category);
-            $result = [
-                "id"    => $category->getId(),
-                "name" => $category->getName(),
-                "children" => [],
-            ];
-            foreach ($children as $child) $result["children"][] = $child->getId();
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
 
+            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
             return [ "result" => "ok", "data" => $result ];
         }
-        return [];
+        return [];  
+    }
+    public function normalizeLogin($username)
+    {
+        if ($username === null) return null;
+        $phone = str_replace(["+", "-", "(", ")", " ", ".", "/", "\\", "*"], "", $username);
+        if (preg_match("#[78]?(9[0-9]{9})#", $phone, $matches)) return "7".$matches[1];
+        return $username;
+    }
+    private function partner_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];  
+    }
+    private function register($request, $rq)
+    {
+        if ($this->session == null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $sm = $this->get('polonairs.smsi');
+
+            $passwordLength = 5;
+            $passwordPattern = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+            $password = $this->createPassword($passwordLength, $passwordPattern);
+            $username = $request["data"]["username"];
+            $timezone = $request["data"]["timezone"];
+            $username = $this->normalizeLogin($username);
+
+            if ($username !== null)
+            {
+                try
+                {
+                    $this->registerPartner($username, $password, -$timezone, $rq->getClientIp());
+                    $sms = (new SmsMessage())
+                        ->setTo($username)
+                        ->setText("Вы успешно зарегистрировались. Ваш пароль: $password");
+                    $sm->send($sms);
+                    return [ "result" => "ok", "data" => "+$username" ];
+                }
+                catch(UserAlreadyRegisteredException $e) { }
+                catch(UserHaveAnotherRoleException $e) { }
+            }
+        }
+        return [ "result" => "fail" ];
     }
     public function registerPartner($username, $password, $timezone, $ip = "unknown")
     {
@@ -451,51 +453,49 @@ class PartnerController extends Controller
             else throw new UserHaveAnotherRoleException($username);
         }
     }
-    public function normalizeLogin($username)
+    private function route_get($request, $rq)
     {
-        if ($username === null) return null;
-        $phone = str_replace(["+", "-", "(", ")", " ", ".", "/", "\\", "*"], "", $username);
-        if (preg_match("#[78]?(9[0-9]{9})#", $phone, $matches)) return "7".$matches[1];
-        return $username;
-    }
-    public function createPassword($length, $source)
-    {
-        $result = "";
-        $count = strlen($source);
-        for ($i = 0; $i < $length; $i++) $result .= substr($source, rand(0, $count), 1);
-        return $result;
-    }
-    private function register($request, $rq)
-    {
-        if ($this->session == null) 
+        if ($this->session !== null) 
         {
             $em = $this->get('doctrine')->getManager();
 
-            $sm = $this->get('polonairs.smsi');
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
 
-            $passwordLength = 5;
-            $passwordPattern = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-            $password = $this->createPassword($passwordLength, $passwordPattern);
-            $username = $request["data"]["username"];
-            $timezone = $request["data"]["timezone"];
-            $username = $this->normalizeLogin($username);
-
-            if ($username !== null)
-            {
-                try
-                {
-                    $this->registerPartner($username, $password, -$timezone, $rq->getClientIp());
-                    $sms = (new SmsMessage())
-                        ->setTo($username)
-                        ->setText("Вы успешно зарегистрировались. Ваш пароль: $password");
-                    $sm->send($sms);
-                    return [ "result" => "ok", "data" => "+$username" ];
-                }
-                catch(UserAlreadyRegisteredException $e) { }
-                catch(UserHaveAnotherRoleException $e) { }
-            }
+            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
+            return [ "result" => "ok", "data" => $result ];
         }
-        return [ "result" => "fail" ];
+        return [];  
+    }
+    private function ticket_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            //$entry = $em->getRepository("ModelBundle:Dongle")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];  
+    }
+    private function transaction_get($request, $rq)
+    {
+        if ($this->session !== null) 
+        {
+            $em = $this->get('doctrine')->getManager();
+
+            $user = $this->session->getOwner();
+            $partner = $em->getRepository("ModelBundle:Partner")->loadPartnerByUser($user);
+
+            //$entry = $em->getRepository("ModelBundle:Transaction")->loadOneForPartner($partner, $request["data"]);
+            $result = [ ];
+            return [ "result" => "ok", "data" => $result ];
+        }
+        return [];  
     }
 }
